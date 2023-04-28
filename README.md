@@ -60,8 +60,15 @@ The audition consists of multiple TODO statements scattered throughout the codeb
 - Make sure that all code quality check are completed.
 - Gradle build completes sucessfully.
 - Make sure the application if functional.
-  
 
+## Submission process
+Applicants need to do the following to submit their work: 
+- Clone this repository
+- Complete their work and zip up the working application. 
+- Applicants then need to send the ZIP archive to the email of the recruiting manager. This email be communicated to the applicant during the recruitment process. 
+
+  
+---
 ## Additional Information based on the implementation
 
 This section MUST be completed by applicants. It allows applicants to showcase their view on how an application can/should be documented. 
