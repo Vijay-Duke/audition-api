@@ -1,0 +1,77 @@
+tasks.withType(Checkstyle) {
+    reports {
+        xml.required = false
+        html.required = true
+        html.stylesheet resources.text.fromFile('config/checkstyle/checkstyle-noframes-sorted.xsl')
+    }
+}
+
+checkstyle {
+    maxErrors = 0
+    maxWarnings = 6
+    ignoreFailures = false
+    reportsDir = file("$project.buildDir/reports/checkstyle")
+    showViolations = true
+    toolVersion = "10.9.3"
+}
+
+checkstyleMain.source = "src/main/java"
+
+pmd {
+    consoleOutput = true
+    toolVersion = "6.45.0"
+    rulesMinimumPriority = 5
+
+    ignoreFailures = false
+    ruleSetFiles = files("$rootProject.projectDir/config/pmd/ruleset.xml")
+}
+
+test {
+    finalizedBy jacocoTestReport // report is always generated after tests run
+}
+
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
+}
+
+jacoco {
+    toolVersion = "0.8.8"
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.8
+            }
+        }
+
+        rule {
+            enabled = false
+            element = 'CLASS'
+            includes = ['org.gradle.*']
+
+            limit {
+                counter = 'LINE'
+                value = 'TOTALCOUNT'
+                maximum = 0.3
+            }
+        }
+    }
+}
+
+spotbugs {
+    ignoreFailures = true
+    effort = 'max'
+    reportLevel = 'high'
+}
+
+spotbugsMain {
+    reports {
+        html {
+            required = true
+            outputLocation = file("$buildDir/reports/spotbugs/spotbugs.html")
+            stylesheet = 'fancy-hist.xsl'
+        }
+    }
+}
