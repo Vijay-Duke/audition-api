@@ -5,7 +5,8 @@ The purpose of this Spring Boot application is to test general knowledge of Spri
 ## Overarching expectations & Assessment areas
 
 <pre>
-This is not a university test. This is meant to be used for job applications and as such must showcase your full skillset. 
+This is not a university test. 
+This is meant to be used for job applications and as such must showcase your full skillset. 
 <b>As such, PRODUCTION-READY code must be written and submitted. </b> 
 </pre>
 
