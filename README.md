@@ -5,6 +5,7 @@
 [![Java](https://img.shields.io/badge/Java-17-orange.svg)](https://openjdk.org/projects/jdk/17/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.0.3-brightgreen.svg)](https://spring.io/projects/spring-boot)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+![Profile Views](https://komarev.com/ghpvc/?username=Vijay-Duke&repo=audition-api)
 
 ## Reports
 - [API Documentation](https://vijay-duke.github.io/audition-api/reports/openapi/index.html)
