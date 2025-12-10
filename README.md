@@ -15,9 +15,9 @@ The purpose of this Spring Boot application is to test general knowledge of Spri
 ## Overarching expectations & Assessment areas
 
 <pre>
-This is not a university test.
-This is meant to be used for job applications and MUST showcase your full skillset.
-<b>As such, PRODUCTION-READY code must be written and submitted. </b>
+This is not a university test. 
+This is meant to be used for job applications and MUST showcase your full skillset. 
+<b>As such, PRODUCTION-READY code must be written and submitted. </b> 
 </pre>
 
 - clean, easy to understand code
@@ -30,7 +30,7 @@ This is meant to be used for job applications and MUST showcase your full skills
 - Proper error handling.
 - Ability to use and configure rest template. We allow for half-setup object mapper and rest template
 - Not all information in the Application is perfect. It is expected that a person would figure these out and correct.
-
+  
 ## Getting Started
 
 ### Prerequisite tooling
@@ -38,7 +38,7 @@ This is meant to be used for job applications and MUST showcase your full skills
 - Any Springboot/Java IDE. Ideally IntelliJIdea.
 - Java 17
 - Gradle 8
-
+  
 ### Prerequisite knowledge
 
 - Java
@@ -78,12 +78,12 @@ The audition consists of multiple TODO statements scattered throughout the codeb
 - Make sure the application if functional.
 
 ## Submission process
-Applicants need to do the following to submit their work:
+Applicants need to do the following to submit their work: 
 - Clone this repository
-- Complete their work and zip up the working application.
-- Applicants then need to send the ZIP archive to the email of the recruiting manager. This email be communicated to the applicant during the recruitment process.
+- Complete their work and zip up the working application. 
+- Applicants then need to send the ZIP archive to the email of the recruiting manager. This email be communicated to the applicant during the recruitment process. 
 
-
+  
 ---
 ## Additional Information based on the implementation
 
@@ -222,4 +222,4 @@ Coverage report available at: `build/reports/jacoco/test/html/index.html`
 Static analysis enabled via:
 - **Checkstyle**: Google Java Style Guide
 - **PMD**: Custom ruleset for bug detection
-- **SpotBugs**: FindBugs successor for bytecode analysis
+- **SpotBugs**: FindBugs successor for bytecode analysis 
