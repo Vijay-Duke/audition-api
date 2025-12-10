@@ -1,6 +1,5 @@
 package com.audition.model;
 
-import java.util.List;
 import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
@@ -8,11 +7,11 @@ import lombok.extern.jackson.Jacksonized;
 @Value
 @Builder
 @Jacksonized
-public class AuditionPost {
+public class Comment {
 
-    int userId;
+    int postId;
     int id;
-    String title;
+    String name;
+    String email;
     String body;
-    List<Comment> comments;
 }
