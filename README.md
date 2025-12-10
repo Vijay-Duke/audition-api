@@ -172,6 +172,13 @@ To see outgoing HTTP request/response logs (to JSONPlaceholder), enable DEBUG le
 ./gradlew bootRun --args='--logging.level.com.audition.configuration.RestTemplateLoggingInterceptor=DEBUG'
 ```
 
+Or add to `application.yml`:
+```yaml
+logging:
+  level:
+    com.audition.configuration.RestTemplateLoggingInterceptor: DEBUG
+```
+
 #### Tracing
 - Micrometer Tracing with Brave bridge
 - **W3C Trace Context** (`traceparent`, `tracestate` headers) as primary propagation
