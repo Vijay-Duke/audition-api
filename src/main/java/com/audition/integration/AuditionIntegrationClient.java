@@ -4,6 +4,7 @@ import com.audition.common.exception.SystemException;
 import com.audition.configuration.AuditionApiProperties;
 import com.audition.model.AuditionPost;
 import com.audition.model.Comment;
+import com.audition.model.PostSearchCriteria;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +18,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * Integration client for the JSONPlaceholder API.
- * Provides methods to fetch posts and comments.
+ * Provides methods to fetch posts and comments with filtering and pagination support.
  */
 @Slf4j
 @Component
@@ -32,8 +33,8 @@ public class AuditionIntegrationClient {
         this.apiProperties = apiProperties;
     }
 
-    public List<AuditionPost> getPosts() {
-        final String url = buildPostsUrl();
+    public List<AuditionPost> getPosts(final PostSearchCriteria criteria) {
+        final String url = buildPostsUrl(criteria);
         log.debug("Fetching posts from: {}", url);
         try {
             return Optional.ofNullable(restTemplate.getForObject(url, AuditionPost[].class))
@@ -94,11 +95,27 @@ public class AuditionIntegrationClient {
         }
     }
 
-    private String buildPostsUrl() {
-        return UriComponentsBuilder
+    private String buildPostsUrl(final PostSearchCriteria criteria) {
+        final UriComponentsBuilder builder = UriComponentsBuilder
             .fromUriString(apiProperties.getBaseUrl())
-            .path(apiProperties.getPostsPath())
-            .toUriString();
+            .path(apiProperties.getPostsPath());
+
+        if (criteria.getUserId() != null) {
+            builder.queryParam("userId", criteria.getUserId());
+        }
+        if (criteria.getTitleContains() != null && !criteria.getTitleContains().isBlank()) {
+            builder.queryParam("title_like", criteria.getTitleContains().trim());
+        }
+        if (criteria.getPage() != null && criteria.getSize() != null) {
+            builder.queryParam("_page", criteria.getPage());
+            builder.queryParam("_limit", criteria.getSize());
+        }
+        if (criteria.getSort() != null) {
+            builder.queryParam("_sort", criteria.getSort());
+            builder.queryParam("_order", criteria.getOrder() != null ? criteria.getOrder() : "asc");
+        }
+
+        return builder.toUriString();
     }
 
     private String buildPostByIdUrl(final Long id) {
