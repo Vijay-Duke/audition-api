@@ -65,6 +65,17 @@ jobs:
           name: pmd-report
           path: build/reports/pmd/
 
+      - name: Generate OpenAPI documentation
+        run: ./gradlew generateOpenApiDocs
+        continue-on-error: true
+
+      - name: Upload OpenAPI docs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: openapi-docs
+          path: build/reports/openapi/
+
       - name: Publish reports to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         if: github.ref == 'refs/heads/main'

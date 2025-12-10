@@ -8,6 +8,7 @@ plugins {
     id "io.freefair.lombok" version "8.0.1"
     id "checkstyle"
     id "pmd"
+    id "org.springdoc.openapi-gradle-plugin" version "1.9.0"
 }
 
 group = 'com.audition'
@@ -89,4 +90,20 @@ tasks.matching { it.name != 'prepareGitHooks' }.all { Task task -> task.dependsO
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+openApi {
+    apiDocsUrl.set("http://localhost:8080/v3/api-docs")
+    outputDir.set(file("${buildDir}/reports/openapi"))
+    outputFileName.set("openapi.json")
+}
+
+task copySwaggerUI(type: Copy) {
+    from 'src/main/resources/static/api-docs'
+    into "${buildDir}/reports/openapi"
+    include '*.html'
+}
+
+tasks.named('generateOpenApiDocs') {
+    finalizedBy copySwaggerUI
 }

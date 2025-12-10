@@ -3,6 +3,7 @@
 ![Build Status](https://github.com/Vijay-Duke/audition-api/actions/workflows/ci.yml/badge.svg)
 
 ## Reports
+- [API Documentation](https://vijay-duke.github.io/audition-api/reports/openapi/index.html)
 - [Test Results](https://vijay-duke.github.io/audition-api/reports/tests/test/index.html)
 - [Code Coverage](https://vijay-duke.github.io/audition-api/reports/jacoco/test/html/index.html)
 - [Checkstyle](https://vijay-duke.github.io/audition-api/reports/checkstyle/main.html)
