@@ -1,0 +1,447 @@
+{
+	"info": {
+		"_postman_id": "audition-api-collection",
+		"name": "Audition API",
+		"description": "REST API for managing posts and comments from JSONPlaceholder.\n\n## Base URL\n- Local: `http://localhost:8080`\n\n## API Version\nAll endpoints are versioned under `/api/v1/`\n\n## Features\n- Filtering by userId and title\n- Pagination support\n- Sorting by id, userId, or title\n- Embedded comments\n- Circuit breaker resilience",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Posts",
+			"description": "Endpoints for managing posts",
+			"item": [
+				{
+					"name": "Get All Posts",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/posts",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "posts"]
+						},
+						"description": "Retrieves all posts without any filtering."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Posts by User ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/posts?userId=1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "posts"],
+							"query": [
+								{
+									"key": "userId",
+									"value": "1",
+									"description": "Filter posts by user ID (must be positive integer)"
+								}
+							]
+						},
+						"description": "Retrieves posts filtered by a specific user ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Search Posts by Title",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/posts?titleContains=sunt",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "posts"],
+							"query": [
+								{
+									"key": "titleContains",
+									"value": "sunt",
+									"description": "Filter posts where title contains this text"
+								}
+							]
+						},
+						"description": "Retrieves posts where the title contains the specified text."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Posts with Pagination",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/posts?page=1&size=10",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "posts"],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number (1-indexed)"
+								},
+								{
+									"key": "size",
+									"value": "10",
+									"description": "Number of items per page"
+								}
+							]
+						},
+						"description": "Retrieves posts with pagination. Both page and size must be provided together."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Posts Sorted",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/posts?sort=title&order=desc",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "posts"],
+							"query": [
+								{
+									"key": "sort",
+									"value": "title",
+									"description": "Sort field: id, userId, or title"
+								},
+								{
+									"key": "order",
+									"value": "desc",
+									"description": "Sort order: asc or desc"
+								}
+							]
+						},
+						"description": "Retrieves posts sorted by a specified field."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Posts with All Filters",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/posts?userId=1&titleContains=qui&page=1&size=5&sort=id&order=asc",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "posts"],
+							"query": [
+								{
+									"key": "userId",
+									"value": "1",
+									"description": "Filter by user ID"
+								},
+								{
+									"key": "titleContains",
+									"value": "qui",
+									"description": "Filter by title containing text"
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number"
+								},
+								{
+									"key": "size",
+									"value": "5",
+									"description": "Page size"
+								},
+								{
+									"key": "sort",
+									"value": "id",
+									"description": "Sort field"
+								},
+								{
+									"key": "order",
+									"value": "asc",
+									"description": "Sort order"
+								}
+							]
+						},
+						"description": "Retrieves posts with all available filters, pagination, and sorting applied."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Post by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/posts/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "posts", "1"]
+						},
+						"description": "Retrieves a single post by its ID."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Post by ID with Comments",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/posts/1?embed=true",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "posts", "1"],
+							"query": [
+								{
+									"key": "embed",
+									"value": "true",
+									"description": "Set to true to include comments in the response"
+								}
+							]
+						},
+						"description": "Retrieves a single post by its ID with embedded comments."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comments",
+			"description": "Endpoints for managing comments",
+			"item": [
+				{
+					"name": "Get Comments for Post",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/posts/1/comments",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "posts", "1", "comments"]
+						},
+						"description": "Retrieves all comments for a specific post."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Health & Monitoring",
+			"description": "Actuator endpoints for health checks and monitoring",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/actuator/health",
+							"host": ["{{baseUrl}}"],
+							"path": ["actuator", "health"]
+						},
+						"description": "Returns the health status of the application."
+					},
+					"response": []
+				},
+				{
+					"name": "Prometheus Metrics",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/actuator/prometheus",
+							"host": ["{{baseUrl}}"],
+							"path": ["actuator", "prometheus"]
+						},
+						"description": "Returns metrics in Prometheus format."
+					},
+					"response": []
+				},
+				{
+					"name": "Application Info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/actuator/info",
+							"host": ["{{baseUrl}}"],
+							"path": ["actuator", "info"]
+						},
+						"description": "Returns application information."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Error Scenarios",
+			"description": "Examples of error responses",
+			"item": [
+				{
+					"name": "Invalid User ID (400)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/posts?userId=-1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "posts"],
+							"query": [
+								{
+									"key": "userId",
+									"value": "-1",
+									"description": "Invalid: userId must be positive"
+								}
+							]
+						},
+						"description": "Demonstrates validation error for invalid userId."
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid Pagination (400)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/posts?page=1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "posts"],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Invalid: size is required when page is provided"
+								}
+							]
+						},
+						"description": "Demonstrates validation error when page is provided without size."
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid Sort Field (400)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/posts?sort=invalid",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "posts"],
+							"query": [
+								{
+									"key": "sort",
+									"value": "invalid",
+									"description": "Invalid: sort must be id, userId, or title"
+								}
+							]
+						},
+						"description": "Demonstrates validation error for invalid sort field."
+					},
+					"response": []
+				},
+				{
+					"name": "Post Not Found (404)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/posts/99999",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "posts", "99999"]
+						},
+						"description": "Demonstrates 404 error when post is not found."
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid Post ID (400)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/posts/-1",
+							"host": ["{{baseUrl}}"],
+							"path": ["api", "v1", "posts", "-1"]
+						},
+						"description": "Demonstrates validation error for negative post ID."
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
