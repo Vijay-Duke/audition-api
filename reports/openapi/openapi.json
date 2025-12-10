@@ -36,6 +36,16 @@
           }
         ],
         "responses": {
+          "503": {
+            "description": "Upstream service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          },
           "200": {
             "description": "Successfully retrieved posts",
             "content": {
@@ -45,16 +55,6 @@
                   "items": {
                     "$ref": "#/components/schemas/AuditionPost"
                   }
-                }
-              }
-            }
-          },
-          "503": {
-            "description": "Upstream service unavailable",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetail"
                 }
               }
             }
@@ -172,8 +172,8 @@
               }
             }
           },
-          "404": {
-            "description": "Post not found",
+          "503": {
+            "description": "Upstream service unavailable",
             "content": {
               "application/json": {
                 "schema": {
@@ -182,8 +182,8 @@
               }
             }
           },
-          "503": {
-            "description": "Upstream service unavailable",
+          "404": {
+            "description": "Post not found",
             "content": {
               "application/json": {
                 "schema": {

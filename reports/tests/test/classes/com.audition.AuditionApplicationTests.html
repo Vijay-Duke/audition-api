@@ -81,7 +81,7 @@
 <tr>
 <td class="success">AuditionController bean should be present</td>
 <td class="success">auditionControllerBeanShouldBePresent()</td>
-<td class="success">0.005s</td>
+<td class="success">0.006s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -93,7 +93,7 @@
 <tr>
 <td class="success">AuditionService bean should be present</td>
 <td class="success">auditionServiceBeanShouldBePresent()</td>
-<td class="success">0.004s</td>
+<td class="success">0.003s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -107,39 +107,39 @@
 <div id="tab1" class="tab">
 <h2>Standard output</h2>
 <span class="code">
-<pre>2025-12-10 05:17:39.348  INFO 2271 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.audition.AuditionApplicationTests]: AuditionApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2025-12-10 05:17:39.350  INFO 2271 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.audition.AuditionApplication for test class com.audition.AuditionApplicationTests
-05:17:39,501 |-INFO in ch.qos.logback.core.joran.util.ConfigurationWatchListUtil@280b9922 - Adding [jar:file:/home/runner/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot/3.0.3/d781e7afbeb3d05ce361e9cc4fa7d38b15fb3862/spring-boot-3.0.3.jar!/org/springframework/boot/logging/logback/defaults.xml] to configuration watch list.
-05:17:39,501 |-INFO in ch.qos.logback.core.joran.spi.ConfigurationWatchList@76cf6b6d - URL [jar:file:/home/runner/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot/3.0.3/d781e7afbeb3d05ce361e9cc4fa7d38b15fb3862/spring-boot-3.0.3.jar!/org/springframework/boot/logging/logback/defaults.xml] is not of type file
-05:17:39,504 |-INFO in ch.qos.logback.core.joran.action.ConversionRuleAction - registering conversion word clr with class [org.springframework.boot.logging.logback.ColorConverter]
-05:17:39,504 |-INFO in ch.qos.logback.core.joran.action.ConversionRuleAction - registering conversion word wex with class [org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter]
-05:17:39,504 |-INFO in ch.qos.logback.core.joran.action.ConversionRuleAction - registering conversion word wEx with class [org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter]
-05:17:39,505 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - Processing appender named [console]
-05:17:39,505 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
-05:17:39,506 |-INFO in ch.qos.logback.core.model.processor.ImplicitModelHandler - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
-05:17:39,507 |-WARN in ch.qos.logback.core.model.processor.AppenderModelHandler - Appender named [flatfile] not referenced. Skipping further processing.
-05:17:39,507 |-WARN in ch.qos.logback.core.model.processor.AppenderModelHandler - Appender named [logstash] not referenced. Skipping further processing.
-05:17:39,507 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.apache.catalina.startup.DigesterFactory] to ERROR
-05:17:39,507 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@428f43be - Propagating ERROR level on Logger[org.apache.catalina.startup.DigesterFactory] onto the JUL framework
-05:17:39,507 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.apache.catalina.util.LifecycleBase] to ERROR
-05:17:39,507 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@428f43be - Propagating ERROR level on Logger[org.apache.catalina.util.LifecycleBase] onto the JUL framework
-05:17:39,507 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.apache.coyote.http11.Http11NioProtocol] to WARN
-05:17:39,507 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@428f43be - Propagating WARN level on Logger[org.apache.coyote.http11.Http11NioProtocol] onto the JUL framework
-05:17:39,507 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.apache.sshd.common.util.SecurityUtils] to WARN
-05:17:39,507 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@428f43be - Propagating WARN level on Logger[org.apache.sshd.common.util.SecurityUtils] onto the JUL framework
-05:17:39,507 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.apache.tomcat.util.net.NioSelectorPool] to WARN
-05:17:39,507 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@428f43be - Propagating WARN level on Logger[org.apache.tomcat.util.net.NioSelectorPool] onto the JUL framework
-05:17:39,507 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.eclipse.jetty.util.component.AbstractLifeCycle] to ERROR
-05:17:39,507 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@428f43be - Propagating ERROR level on Logger[org.eclipse.jetty.util.component.AbstractLifeCycle] onto the JUL framework
-05:17:39,507 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.hibernate.validator.internal.util.Version] to WARN
-05:17:39,507 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@428f43be - Propagating WARN level on Logger[org.hibernate.validator.internal.util.Version] onto the JUL framework
-05:17:39,508 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.springframework.boot.actuate.endpoint.jmx] to WARN
-05:17:39,508 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@428f43be - Propagating WARN level on Logger[org.springframework.boot.actuate.endpoint.jmx] onto the JUL framework
-05:17:39,508 |-INFO in ch.qos.logback.classic.model.processor.RootLoggerModelHandler - Setting level of ROOT logger to INFO
-05:17:39,508 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@428f43be - Propagating INFO level on Logger[ROOT] onto the JUL framework
-05:17:39,508 |-INFO in ch.qos.logback.core.model.processor.AppenderRefModelHandler - Attaching appender named [console] to Logger[ROOT]
-05:17:39,508 |-INFO in ch.qos.logback.core.model.processor.DefaultProcessor@97c2bfb - End of configuration.
-05:17:39,508 |-INFO in org.springframework.boot.logging.logback.SpringBootJoranConfigurator@3eb05bc1 - Registering current configuration as safe fallback point
+<pre>2025-12-10 05:20:36.320  INFO 2267 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.audition.AuditionApplicationTests]: AuditionApplicationTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-12-10 05:20:36.323  INFO 2267 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.audition.AuditionApplication for test class com.audition.AuditionApplicationTests
+05:20:36,464 |-INFO in ch.qos.logback.core.joran.util.ConfigurationWatchListUtil@38ebb117 - Adding [jar:file:/home/runner/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot/3.0.3/d781e7afbeb3d05ce361e9cc4fa7d38b15fb3862/spring-boot-3.0.3.jar!/org/springframework/boot/logging/logback/defaults.xml] to configuration watch list.
+05:20:36,464 |-INFO in ch.qos.logback.core.joran.spi.ConfigurationWatchList@54388ff5 - URL [jar:file:/home/runner/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot/3.0.3/d781e7afbeb3d05ce361e9cc4fa7d38b15fb3862/spring-boot-3.0.3.jar!/org/springframework/boot/logging/logback/defaults.xml] is not of type file
+05:20:36,467 |-INFO in ch.qos.logback.core.joran.action.ConversionRuleAction - registering conversion word clr with class [org.springframework.boot.logging.logback.ColorConverter]
+05:20:36,467 |-INFO in ch.qos.logback.core.joran.action.ConversionRuleAction - registering conversion word wex with class [org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter]
+05:20:36,468 |-INFO in ch.qos.logback.core.joran.action.ConversionRuleAction - registering conversion word wEx with class [org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter]
+05:20:36,471 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - Processing appender named [console]
+05:20:36,471 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+05:20:36,472 |-INFO in ch.qos.logback.core.model.processor.ImplicitModelHandler - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+05:20:36,475 |-WARN in ch.qos.logback.core.model.processor.AppenderModelHandler - Appender named [flatfile] not referenced. Skipping further processing.
+05:20:36,475 |-WARN in ch.qos.logback.core.model.processor.AppenderModelHandler - Appender named [logstash] not referenced. Skipping further processing.
+05:20:36,475 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.apache.catalina.startup.DigesterFactory] to ERROR
+05:20:36,475 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@6712d116 - Propagating ERROR level on Logger[org.apache.catalina.startup.DigesterFactory] onto the JUL framework
+05:20:36,475 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.apache.catalina.util.LifecycleBase] to ERROR
+05:20:36,475 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@6712d116 - Propagating ERROR level on Logger[org.apache.catalina.util.LifecycleBase] onto the JUL framework
+05:20:36,475 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.apache.coyote.http11.Http11NioProtocol] to WARN
+05:20:36,475 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@6712d116 - Propagating WARN level on Logger[org.apache.coyote.http11.Http11NioProtocol] onto the JUL framework
+05:20:36,475 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.apache.sshd.common.util.SecurityUtils] to WARN
+05:20:36,475 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@6712d116 - Propagating WARN level on Logger[org.apache.sshd.common.util.SecurityUtils] onto the JUL framework
+05:20:36,475 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.apache.tomcat.util.net.NioSelectorPool] to WARN
+05:20:36,475 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@6712d116 - Propagating WARN level on Logger[org.apache.tomcat.util.net.NioSelectorPool] onto the JUL framework
+05:20:36,475 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.eclipse.jetty.util.component.AbstractLifeCycle] to ERROR
+05:20:36,475 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@6712d116 - Propagating ERROR level on Logger[org.eclipse.jetty.util.component.AbstractLifeCycle] onto the JUL framework
+05:20:36,475 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.hibernate.validator.internal.util.Version] to WARN
+05:20:36,475 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@6712d116 - Propagating WARN level on Logger[org.hibernate.validator.internal.util.Version] onto the JUL framework
+05:20:36,475 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.springframework.boot.actuate.endpoint.jmx] to WARN
+05:20:36,475 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@6712d116 - Propagating WARN level on Logger[org.springframework.boot.actuate.endpoint.jmx] onto the JUL framework
+05:20:36,475 |-INFO in ch.qos.logback.classic.model.processor.RootLoggerModelHandler - Setting level of ROOT logger to INFO
+05:20:36,476 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@6712d116 - Propagating INFO level on Logger[ROOT] onto the JUL framework
+05:20:36,476 |-INFO in ch.qos.logback.core.model.processor.AppenderRefModelHandler - Attaching appender named [console] to Logger[ROOT]
+05:20:36,476 |-INFO in ch.qos.logback.core.model.processor.DefaultProcessor@3ac9e8b8 - End of configuration.
+05:20:36,476 |-INFO in org.springframework.boot.logging.logback.SpringBootJoranConfigurator@115907f7 - Registering current configuration as safe fallback point
 
 
   .   ____          _            __ _ _
@@ -150,14 +150,14 @@
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::                (v3.0.3)
 
-2025-12-10 05:17:39.533  INFO 2271 --- [    Test worker] com.audition.AuditionApplicationTests    : Starting AuditionApplicationTests using Java 17.0.17 with PID 2271 (started by runner in /home/runner/work/audition-api/audition-api)
-2025-12-10 05:17:39.533  INFO 2271 --- [    Test worker] com.audition.AuditionApplicationTests    : No active profile set, falling back to 1 default profile: &quot;default&quot;
-2025-12-10 05:17:39.540  INFO 2271 --- [    Test worker] o.s.c.c.c.ConfigServerConfigDataLoader   : Fetching config from server at : http://localhost:8888
-2025-12-10 05:17:39.540  INFO 2271 --- [    Test worker] o.s.c.c.c.ConfigServerConfigDataLoader   : Connect Timeout Exception on Url - http://localhost:8888. Will try the next url if available
-2025-12-10 05:17:39.540  WARN 2271 --- [    Test worker] o.s.c.c.c.ConfigServerConfigDataLoader   : Could not locate PropertySource ([ConfigServerConfigDataResource@4660248 uris = array&lt;String&gt;['http://localhost:8888'], optional = true, profiles = list['default']]): I/O error on GET request for &quot;http://localhost:8888/application/default&quot;: Connection refused
-2025-12-10 05:17:40.009  INFO 2271 --- [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=131d3e9e-e8a0-30d7-bf19-47d70801d52a
-2025-12-10 05:17:42.181  INFO 2271 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint(s) beneath base path '/actuator'
-2025-12-10 05:17:42.222  INFO 2271 --- [    Test worker] com.audition.AuditionApplicationTests    : Started AuditionApplicationTests in 2.859 seconds (process running for 82.273)
+2025-12-10 05:20:36.492  INFO 2267 --- [    Test worker] com.audition.AuditionApplicationTests    : Starting AuditionApplicationTests using Java 17.0.17 with PID 2267 (started by runner in /home/runner/work/audition-api/audition-api)
+2025-12-10 05:20:36.492  INFO 2267 --- [    Test worker] com.audition.AuditionApplicationTests    : No active profile set, falling back to 1 default profile: &quot;default&quot;
+2025-12-10 05:20:36.497  INFO 2267 --- [    Test worker] o.s.c.c.c.ConfigServerConfigDataLoader   : Fetching config from server at : http://localhost:8888
+2025-12-10 05:20:36.497  INFO 2267 --- [    Test worker] o.s.c.c.c.ConfigServerConfigDataLoader   : Connect Timeout Exception on Url - http://localhost:8888. Will try the next url if available
+2025-12-10 05:20:36.497  WARN 2267 --- [    Test worker] o.s.c.c.c.ConfigServerConfigDataLoader   : Could not locate PropertySource ([ConfigServerConfigDataResource@33300529 uris = array&lt;String&gt;['http://localhost:8888'], optional = true, profiles = list['default']]): I/O error on GET request for &quot;http://localhost:8888/application/default&quot;: Connection refused
+2025-12-10 05:20:36.928  INFO 2267 --- [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=131d3e9e-e8a0-30d7-bf19-47d70801d52a
+2025-12-10 05:20:39.006  INFO 2267 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint(s) beneath base path '/actuator'
+2025-12-10 05:20:39.051  INFO 2267 --- [    Test worker] com.audition.AuditionApplicationTests    : Started AuditionApplicationTests in 2.707 seconds (process running for 79.916)
 </pre>
 </span>
 </div>
@@ -169,7 +169,7 @@
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="http://www.gradle.org">Gradle 7.6</a> at Dec 10, 2025, 5:17:44 AM</p>
+<a href="http://www.gradle.org">Gradle 7.6</a> at Dec 10, 2025, 5:20:41 AM</p>
 </div>
 </div>
 </body>
