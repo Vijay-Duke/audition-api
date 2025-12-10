@@ -134,8 +134,21 @@ class WebServiceConfigurationTest {
         }
 
         @Test
-        @DisplayName("Should configure RestTemplate with SimpleClientHttpRequestFactory")
-        void shouldConfigureSimpleRequestFactory() {
+        @DisplayName("Should configure RestTemplate with request factory")
+        void shouldConfigureRequestFactory() {
+            // Arrange
+            final ObjectMapper objectMapper = configuration.objectMapper();
+
+            // Act
+            final RestTemplate restTemplate = configuration.restTemplate(objectMapper);
+
+            // Assert - Request factory is configured (BufferingClientHttpRequestFactory wrapped by InterceptingClientHttpRequestFactory)
+            assertThat(restTemplate.getRequestFactory()).isNotNull();
+        }
+
+        @Test
+        @DisplayName("Should configure RestTemplate with logging interceptor")
+        void shouldConfigureLoggingInterceptor() {
             // Arrange
             final ObjectMapper objectMapper = configuration.objectMapper();
 
@@ -143,7 +156,9 @@ class WebServiceConfigurationTest {
             final RestTemplate restTemplate = configuration.restTemplate(objectMapper);
 
             // Assert
-            assertThat(restTemplate.getRequestFactory()).isNotNull();
+            assertThat(restTemplate.getInterceptors())
+                .hasSize(1)
+                .hasAtLeastOneElementOfType(RestTemplateLoggingInterceptor.class);
         }
 
         @Test

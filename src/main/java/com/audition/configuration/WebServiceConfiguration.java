@@ -9,6 +9,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
@@ -38,7 +39,9 @@ public class WebServiceConfiguration implements WebMvcConfigurer {
 
     @Bean
     public RestTemplate restTemplate(final ObjectMapper objectMapper) {
-        final RestTemplate restTemplate = new RestTemplate(createClientFactory());
+        // Wrap with BufferingClientHttpRequestFactory to allow response body to be read multiple times (for logging)
+        final RestTemplate restTemplate = new RestTemplate(
+            new BufferingClientHttpRequestFactory(createClientFactory()));
         restTemplate.getMessageConverters().replaceAll(converter ->
             converter instanceof MappingJackson2HttpMessageConverter
                 ? new MappingJackson2HttpMessageConverter(objectMapper)

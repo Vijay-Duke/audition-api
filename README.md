@@ -166,6 +166,11 @@ All endpoints are versioned under `/api/v1/`:
 - Structured JSON logging for production (`logback-spring.xml`)
 - Request/response logging via `RestTemplateLoggingInterceptor`
 
+To see outgoing HTTP request/response logs (to JSONPlaceholder), enable DEBUG level:
+```bash
+./gradlew bootRun --args='--logging.level.com.audition.configuration.RestTemplateLoggingInterceptor=DEBUG'
+```
+
 #### Tracing
 - Micrometer Tracing with Brave bridge
 - **W3C Trace Context** (`traceparent`, `tracestate` headers) as primary propagation

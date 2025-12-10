@@ -55,13 +55,9 @@ public class RestTemplateLoggingInterceptor implements ClientHttpRequestIntercep
                 response.getStatusCode(),
                 durationMs);
             LOG.debug("<== Headers: {}", response.getHeaders());
-
-            // Only log body for non-successful responses or when trace is enabled
-            if (LOG.isTraceEnabled()) {
-                final byte[] bodyBytes = StreamUtils.copyToByteArray(response.getBody());
-                final String bodyStr = new String(bodyBytes, StandardCharsets.UTF_8);
-                LOG.trace("<== Body: {}", truncateIfNeeded(bodyStr));
-            }
+            final byte[] bodyBytes = StreamUtils.copyToByteArray(response.getBody());
+            final String bodyStr = new String(bodyBytes, StandardCharsets.UTF_8);
+            LOG.debug("<== Body: {}", truncateIfNeeded(bodyStr));
         }
     }
 
