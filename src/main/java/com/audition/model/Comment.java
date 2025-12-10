@@ -12,10 +12,10 @@ import lombok.extern.jackson.Jacksonized;
 public class Comment {
 
     @Schema(description = "ID of the post this comment belongs to", example = "1")
-    int postId;
+    Long postId;
 
     @Schema(description = "Unique identifier of the comment", example = "1")
-    int id;
+    Long id;
 
     @Schema(description = "Name/title of the comment", example = "id labore ex et quam laborum")
     String name;

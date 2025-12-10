@@ -312,8 +312,8 @@ class AuditionIntegrationClientTest {
         void shouldReturnPostWithEmbeddedComments() {
             // Arrange
             final AuditionPost post = AuditionPost.builder()
-                .id(1)
-                .userId(1)
+                .id(1L)
+                .userId(1L)
                 .title("Test Post 1")
                 .body("Test Body 1")
                 .comments(List.of(createComment(1), createComment(2)))
@@ -617,8 +617,8 @@ class AuditionIntegrationClientTest {
         void shouldHandlePostWithNullOptionalFields() {
             // Arrange
             final AuditionPost postWithNulls = AuditionPost.builder()
-                .id(1)
-                .userId(1)
+                .id(1L)
+                .userId(1L)
                 .title(null)  // null title
                 .body(null)   // null body
                 .build();
@@ -639,8 +639,8 @@ class AuditionIntegrationClientTest {
         void shouldHandlePostWithEmptyCommentsList() {
             // Arrange
             final AuditionPost postWithEmptyComments = AuditionPost.builder()
-                .id(1)
-                .userId(1)
+                .id(1L)
+                .userId(1L)
                 .title("Test")
                 .body("Body")
                 .comments(List.of())
@@ -893,19 +893,19 @@ class AuditionIntegrationClientTest {
         }
     }
 
-    private AuditionPost createPost(final int id) {
+    private AuditionPost createPost(final long id) {
         return AuditionPost.builder()
             .id(id)
-            .userId(1)
+            .userId(1L)
             .title("Test Post " + id)
             .body("Test Body " + id)
             .build();
     }
 
-    private Comment createComment(final int id) {
+    private Comment createComment(final long id) {
         return Comment.builder()
             .id(id)
-            .postId(1)
+            .postId(1L)
             .name("Test Comment " + id)
             .email("test@example.com")
             .body("Comment body " + id)

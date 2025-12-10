@@ -21,8 +21,8 @@ class CommentTest {
         void shouldCreateCommentWithAllFields() {
             // Act
             final Comment comment = Comment.builder()
-                .postId(42)
-                .id(1)
+                .postId(42L)
+                .id(1L)
                 .name("John Doe")
                 .email("john.doe@example.com")
                 .body("This is a comment body")
@@ -43,8 +43,8 @@ class CommentTest {
             final Comment comment = Comment.builder().build();
 
             // Assert
-            assertThat(comment.getPostId()).isZero();
-            assertThat(comment.getId()).isZero();
+            assertThat(comment.getPostId()).isNull();
+            assertThat(comment.getId()).isNull();
             assertThat(comment.getName()).isNull();
             assertThat(comment.getEmail()).isNull();
             assertThat(comment.getBody()).isNull();
@@ -55,8 +55,8 @@ class CommentTest {
         void shouldCreateCommentWithPartialFields() {
             // Act
             final Comment comment = Comment.builder()
-                .id(5)
-                .postId(10)
+                .id(5L)
+                .postId(10L)
                 .build();
 
             // Assert
@@ -77,16 +77,16 @@ class CommentTest {
         void shouldBeEqualWhenAllFieldsMatch() {
             // Arrange
             final Comment comment1 = Comment.builder()
-                .postId(1)
-                .id(1)
+                .postId(1L)
+                .id(1L)
                 .name("Name")
                 .email(TEST_EMAIL)
                 .body(TEST_BODY)
                 .build();
 
             final Comment comment2 = Comment.builder()
-                .postId(1)
-                .id(1)
+                .postId(1L)
+                .id(1L)
                 .name("Name")
                 .email(TEST_EMAIL)
                 .body(TEST_BODY)
@@ -102,16 +102,16 @@ class CommentTest {
         void shouldNotBeEqualWhenFieldsDiffer() {
             // Arrange
             final Comment comment1 = Comment.builder()
-                .postId(1)
-                .id(1)
+                .postId(1L)
+                .id(1L)
                 .name("Name 1")
                 .email(TEST_EMAIL)
                 .body(TEST_BODY)
                 .build();
 
             final Comment comment2 = Comment.builder()
-                .postId(1)
-                .id(1)
+                .postId(1L)
+                .id(1L)
                 .name("Name 2")
                 .email(TEST_EMAIL)
                 .body(TEST_BODY)
@@ -131,8 +131,8 @@ class CommentTest {
         void shouldGenerateMeaningfulToString() {
             // Arrange
             final Comment comment = Comment.builder()
-                .postId(10)
-                .id(5)
+                .postId(10L)
+                .id(5L)
                 .name("John")
                 .email("john@test.com")
                 .body("Comment text")

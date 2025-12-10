@@ -13,10 +13,10 @@ import lombok.extern.jackson.Jacksonized;
 public class AuditionPost {
 
     @Schema(description = "ID of the user who created the post", example = "1")
-    int userId;
+    Long userId;
 
     @Schema(description = "Unique identifier of the post", example = "1")
-    int id;
+    Long id;
 
     @Schema(description = "Title of the post", example = "sunt aut facere repellat provident")
     String title;

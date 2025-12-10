@@ -112,8 +112,8 @@ class AuditionControllerTest {
         void shouldDelegateToServiceWithComments() {
             // Arrange
             final AuditionPost expectedPost = AuditionPost.builder()
-                .id(1)
-                .userId(1)
+                .id(1L)
+                .userId(1L)
                 .title("Test Post 1")
                 .body("Test Body 1")
                 .comments(List.of(createComment(1)))
@@ -185,19 +185,19 @@ class AuditionControllerTest {
         }
     }
 
-    private AuditionPost createPost(final int id) {
+    private AuditionPost createPost(final long id) {
         return AuditionPost.builder()
             .id(id)
-            .userId(1)
+            .userId(1L)
             .title("Test Post " + id)
             .body("Test Body " + id)
             .build();
     }
 
-    private Comment createComment(final int id) {
+    private Comment createComment(final long id) {
         return Comment.builder()
             .id(id)
-            .postId(1)
+            .postId(1L)
             .name("Test Comment " + id)
             .email("test@example.com")
             .body("Comment body " + id)

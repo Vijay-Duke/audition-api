@@ -22,8 +22,8 @@ class AuditionPostTest {
         void shouldCreatePostWithAllFields() {
             // Arrange
             final Comment comment = Comment.builder()
-                .id(1)
-                .postId(42)
+                .id(1L)
+                .postId(42L)
                 .name("Test Comment")
                 .email("test@example.com")
                 .body("Comment body")
@@ -31,8 +31,8 @@ class AuditionPostTest {
 
             // Act
             final AuditionPost post = AuditionPost.builder()
-                .userId(10)
-                .id(42)
+                .userId(10L)
+                .id(42L)
                 .title("Test Title")
                 .body("Test body content")
                 .comments(List.of(comment))
@@ -54,8 +54,8 @@ class AuditionPostTest {
             final AuditionPost post = AuditionPost.builder().build();
 
             // Assert
-            assertThat(post.getUserId()).isZero();
-            assertThat(post.getId()).isZero();
+            assertThat(post.getUserId()).isNull();
+            assertThat(post.getId()).isNull();
             assertThat(post.getTitle()).isNull();
             assertThat(post.getBody()).isNull();
             assertThat(post.getComments()).isNull();
@@ -66,8 +66,8 @@ class AuditionPostTest {
         void shouldCreatePostWithoutComments() {
             // Act
             final AuditionPost post = AuditionPost.builder()
-                .userId(1)
-                .id(1)
+                .userId(1L)
+                .id(1L)
                 .title(TEST_TITLE)
                 .body(TEST_BODY)
                 .build();
@@ -81,8 +81,8 @@ class AuditionPostTest {
         void shouldCreatePostWithEmptyCommentsList() {
             // Act
             final AuditionPost post = AuditionPost.builder()
-                .userId(1)
-                .id(1)
+                .userId(1L)
+                .id(1L)
                 .title(TEST_TITLE)
                 .body(TEST_BODY)
                 .comments(List.of())
@@ -102,15 +102,15 @@ class AuditionPostTest {
         void shouldBeEqualWhenAllFieldsMatch() {
             // Arrange
             final AuditionPost post1 = AuditionPost.builder()
-                .userId(1)
-                .id(1)
+                .userId(1L)
+                .id(1L)
                 .title(TEST_TITLE)
                 .body(TEST_BODY)
                 .build();
 
             final AuditionPost post2 = AuditionPost.builder()
-                .userId(1)
-                .id(1)
+                .userId(1L)
+                .id(1L)
                 .title(TEST_TITLE)
                 .body(TEST_BODY)
                 .build();
@@ -125,15 +125,15 @@ class AuditionPostTest {
         void shouldNotBeEqualWhenFieldsDiffer() {
             // Arrange
             final AuditionPost post1 = AuditionPost.builder()
-                .userId(1)
-                .id(1)
+                .userId(1L)
+                .id(1L)
                 .title(TEST_TITLE + " 1")
                 .body(TEST_BODY)
                 .build();
 
             final AuditionPost post2 = AuditionPost.builder()
-                .userId(1)
-                .id(1)
+                .userId(1L)
+                .id(1L)
                 .title(TEST_TITLE + " 2")
                 .body(TEST_BODY)
                 .build();
@@ -152,8 +152,8 @@ class AuditionPostTest {
         void shouldGenerateMeaningfulToString() {
             // Arrange
             final AuditionPost post = AuditionPost.builder()
-                .userId(1)
-                .id(42)
+                .userId(1L)
+                .id(42L)
                 .title("Test Title")
                 .body("Test Body")
                 .build();
