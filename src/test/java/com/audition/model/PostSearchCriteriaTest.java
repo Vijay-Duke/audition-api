@@ -196,6 +196,25 @@ class PostSearchCriteriaTest {
                 v.getMessage().contains("Page size must be a positive integer"))).isTrue();
         }
 
+        @ParameterizedTest(name = "size = {0} should exceed maximum")
+        @ValueSource(ints = {101, 500, 1_000_000})
+        @DisplayName("Should fail when size exceeds maximum of 100")
+        void shouldFailWhenSizeExceedsMaximum(final int size) {
+            // Arrange
+            final PostSearchCriteria criteria = PostSearchCriteria.builder()
+                .page(1)
+                .size(size)
+                .build();
+
+            // Act
+            final Set<ConstraintViolation<PostSearchCriteria>> violations = validator.validate(criteria);
+
+            // Assert
+            assertThat(violations).isNotEmpty();
+            assertThat(violations.stream().anyMatch(v ->
+                v.getMessage().contains("Page size cannot exceed 100"))).isTrue();
+        }
+
         @Test
         @DisplayName("Should accept page 1 with valid size")
         void shouldAcceptPageOne() {

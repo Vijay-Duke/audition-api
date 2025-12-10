@@ -2,6 +2,7 @@ package com.audition.model;
 
 import com.audition.validation.ValidPostSearchCriteria;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
@@ -27,8 +28,9 @@ public class PostSearchCriteria {
     @Min(value = 1, message = "Page number must be at least 1")
     Integer page;
 
-    @Schema(description = "Number of items per page. Must be used together with 'page'", example = "10", minimum = "1")
+    @Schema(description = "Number of items per page (max 100). Must be used together with 'page'", example = "10", minimum = "1", maximum = "100")
     @Positive(message = "Page size must be a positive integer")
+    @Max(value = 100, message = "Page size cannot exceed 100")
     Integer size;
 
     @Schema(description = "Field to sort by", example = "id", allowableValues = {"id", "userId", "title"})

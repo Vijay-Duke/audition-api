@@ -22,7 +22,8 @@ class ExceptionControllerAdviceTest {
 
     @BeforeEach
     void setUp() {
-        advice = new ExceptionControllerAdvice();
+        final ProblemDetailFactory problemDetailFactory = new ProblemDetailFactory();
+        advice = new ExceptionControllerAdvice(problemDetailFactory);
     }
 
     @Nested
@@ -41,7 +42,7 @@ class ExceptionControllerAdviceTest {
 
             // Assert
             assertThat(result.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
-            assertThat(result.getTitle()).isEqualTo(ExceptionControllerAdvice.DEFAULT_TITLE);
+            assertThat(result.getTitle()).isEqualTo(ProblemDetailFactory.DEFAULT_TITLE);
         }
 
         @Test
@@ -75,7 +76,7 @@ class ExceptionControllerAdviceTest {
             // Assert
             assertThat(result.getStatus()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR.value());
             assertThat(result.getDetail()).isEqualTo("Something went wrong");
-            assertThat(result.getTitle()).isEqualTo(ExceptionControllerAdvice.DEFAULT_TITLE);
+            assertThat(result.getTitle()).isEqualTo(ProblemDetailFactory.DEFAULT_TITLE);
         }
 
         @Test
