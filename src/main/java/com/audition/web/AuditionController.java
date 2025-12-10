@@ -75,14 +75,17 @@ public class AuditionController {
     /**
      * Retrieves a single post by its ID, optionally including its comments.
      *
+     * <p>Uses JSON:API style inclusion pattern: {@code ?include=comments}
+     * This allows fetching related resources in a single request to reduce round trips.</p>
+     *
      * @param postId the ID of the post to retrieve (must be a positive integer)
-     * @param includeComments if true, embeds the post's comments in the response
+     * @param include comma-separated list of related resources to include (supported: "comments")
      * @return the post with the specified ID
      * @throws com.audition.common.exception.SystemException with status 404 if post not found
      */
     @Operation(
         summary = "Get post by ID",
-        description = "Retrieves a single post by its ID, optionally embedding its comments"
+        description = "Retrieves a single post by its ID. Use ?include=comments to embed comments in the response."
     )
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Successfully retrieved post"),
@@ -97,8 +100,9 @@ public class AuditionController {
     public AuditionPost getPostById(
             @Parameter(description = "Post ID", example = "1", schema = @Schema(minimum = "1"))
             @PathVariable("id") @Positive(message = "Post id must be a positive integer") final Long postId,
-            @Parameter(description = "Include comments in response")
-            @RequestParam(value = "embed", defaultValue = "false") final boolean includeComments) {
+            @Parameter(description = "Related resources to include (e.g., 'comments')", example = "comments")
+            @RequestParam(value = "include", required = false) final String include) {
+        final boolean includeComments = "comments".equalsIgnoreCase(include);
         LOG.debug("Getting post by id: {}, includeComments: {}", postId, includeComments);
         final AuditionPost post = auditionService.getPostById(postId, includeComments);
         LOG.debug("Returning post: {}", post.getId());

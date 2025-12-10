@@ -24,6 +24,6 @@ public class AuditionPost {
     @Schema(description = "Body content of the post", example = "quia et suscipit...")
     String body;
 
-    @Schema(description = "Comments on this post (only included when embed=true)")
+    @Schema(description = "Comments on this post (only included when include=comments)")
     List<Comment> comments;
 }

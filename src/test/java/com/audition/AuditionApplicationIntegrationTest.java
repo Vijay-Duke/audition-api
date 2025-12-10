@@ -226,7 +226,7 @@ class AuditionApplicationIntegrationTest {
                         """)));
 
             // Act
-            final ResponseEntity<String> response = restTemplate.getForEntity("/api/v1/posts/1?embed=true", String.class);
+            final ResponseEntity<String> response = restTemplate.getForEntity("/api/v1/posts/1?include=comments", String.class);
 
             // Assert
             assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);

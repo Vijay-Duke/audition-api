@@ -93,14 +93,14 @@ class AuditionControllerTest {
     class GetPostByIdTests {
 
         @Test
-        @DisplayName("Should delegate to service with includeComments false")
+        @DisplayName("Should delegate to service with includeComments false when include param is null")
         void shouldDelegateToServiceWithoutComments() {
             // Arrange
             final AuditionPost expectedPost = createPost(1);
             when(auditionService.getPostById(1L, false)).thenReturn(expectedPost);
 
             // Act
-            final AuditionPost result = controller.getPostById(1L, false);
+            final AuditionPost result = controller.getPostById(1L, null);
 
             // Assert
             assertThat(result).isEqualTo(expectedPost);
@@ -108,7 +108,7 @@ class AuditionControllerTest {
         }
 
         @Test
-        @DisplayName("Should delegate to service with includeComments true")
+        @DisplayName("Should delegate to service with includeComments true when include=comments")
         void shouldDelegateToServiceWithComments() {
             // Arrange
             final AuditionPost expectedPost = AuditionPost.builder()
@@ -121,7 +121,7 @@ class AuditionControllerTest {
             when(auditionService.getPostById(1L, true)).thenReturn(expectedPost);
 
             // Act
-            final AuditionPost result = controller.getPostById(1L, true);
+            final AuditionPost result = controller.getPostById(1L, "comments");
 
             // Assert
             assertThat(result).isEqualTo(expectedPost);
@@ -163,7 +163,7 @@ class AuditionControllerTest {
             when(auditionService.getPostById(postId, false)).thenReturn(expectedPost);
 
             // Act
-            final AuditionPost result = controller.getPostById(postId, false);
+            final AuditionPost result = controller.getPostById(postId, null);
 
             // Assert
             assertThat(result).isEqualTo(expectedPost);
