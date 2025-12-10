@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AuditionIntegrationClient.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">audition-api</a> &gt; <a href="index.source.html" class="el_package">com.audition.integration</a> &gt; <span class="el_source">AuditionIntegrationClient.java</span></div><h1>AuditionIntegrationClient.java</h1><pre class="source lang-java linenums">package com.audition.integration;
+
+import com.audition.common.exception.SystemException;
+import com.audition.configuration.AuditionApiProperties;
+import com.audition.model.AuditionPost;
+import com.audition.model.Comment;
+import com.audition.model.PostSearchCriteria;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Supplier;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.ResourceAccessException;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
+/**
+ * Integration client for the JSONPlaceholder API.
+ * Provides methods to fetch posts and comments with circuit breaker and retry support.
+ */
+<span class="fc" id="L28">@Slf4j</span>
+@Component
+@SuppressWarnings({&quot;PMD.UnusedPrivateMethod&quot;, &quot;PMD.UnusedFormalParameter&quot;}) // Resilience4j fallbacks invoked via reflection
+public class AuditionIntegrationClient {
+
+    private static final String SERVICE_UNAVAILABLE_MESSAGE = &quot;Service temporarily unavailable. Please try again later.&quot;;
+    private static final String CIRCUIT_BREAKER_NAME = &quot;${audition.api.circuit-breaker-name}&quot;;
+
+    private final RestTemplate restTemplate;
+    private final AuditionApiProperties apiProperties;
+
+    public AuditionIntegrationClient(final RestTemplate restTemplate,
+<span class="fc" id="L40">                                     final AuditionApiProperties apiProperties) {</span>
+<span class="fc" id="L41">        this.restTemplate = restTemplate;</span>
+<span class="fc" id="L42">        this.apiProperties = apiProperties;</span>
+<span class="fc" id="L43">    }</span>
+
+    @Retry(name = CIRCUIT_BREAKER_NAME)
+    @CircuitBreaker(name = CIRCUIT_BREAKER_NAME, fallbackMethod = &quot;getPostsFallback&quot;)
+    public List&lt;AuditionPost&gt; getPosts(final PostSearchCriteria criteria) {
+<span class="fc" id="L48">        final String url = buildPostsUrl(criteria);</span>
+<span class="fc" id="L49">        log.debug(&quot;Fetching posts from: {}&quot;, url);</span>
+<span class="fc" id="L50">        return executeWithErrorHandling(</span>
+<span class="fc" id="L51">            () -&gt; Optional.ofNullable(restTemplate.getForObject(url, AuditionPost[].class))</span>
+<span class="fc" id="L52">                .map(Arrays::asList)</span>
+<span class="fc" id="L53">                .orElse(List.of()),</span>
+            &quot;posts&quot;
+        );
+    }
+
+    @Retry(name = CIRCUIT_BREAKER_NAME)
+    @CircuitBreaker(name = CIRCUIT_BREAKER_NAME, fallbackMethod = &quot;getPostByIdFallback&quot;)
+    public AuditionPost getPostById(final Long id) {
+<span class="fc" id="L61">        final String url = buildPostByIdUrl(id);</span>
+<span class="fc" id="L62">        log.debug(&quot;Fetching post by id from: {}&quot;, url);</span>
+<span class="fc" id="L63">        return executeWithErrorHandling(</span>
+<span class="fc" id="L64">            () -&gt; Optional.ofNullable(restTemplate.getForObject(url, AuditionPost.class))</span>
+<span class="fc" id="L65">                .orElseThrow(() -&gt; SystemException.notFound(&quot;Cannot find a Post with id &quot; + id)),</span>
+            &quot;Post with id &quot; + id
+        );
+    }
+
+    @Retry(name = CIRCUIT_BREAKER_NAME)
+    @CircuitBreaker(name = CIRCUIT_BREAKER_NAME, fallbackMethod = &quot;getPostWithCommentsFallback&quot;)
+    public AuditionPost getPostWithComments(final Long postId) {
+<span class="fc" id="L73">        final String url = buildPostWithCommentsUrl(postId);</span>
+<span class="fc" id="L74">        log.debug(&quot;Fetching post with comments from: {}&quot;, url);</span>
+<span class="fc" id="L75">        return executeWithErrorHandling(</span>
+<span class="fc" id="L76">            () -&gt; Optional.ofNullable(restTemplate.getForObject(url, AuditionPost.class))</span>
+<span class="fc" id="L77">                .orElseThrow(() -&gt; SystemException.notFound(&quot;Cannot find a Post with id &quot; + postId)),</span>
+            &quot;Post with id &quot; + postId
+        );
+    }
+
+    @Retry(name = CIRCUIT_BREAKER_NAME)
+    @CircuitBreaker(name = CIRCUIT_BREAKER_NAME, fallbackMethod = &quot;getCommentsForPostFallback&quot;)
+    public List&lt;Comment&gt; getCommentsForPost(final Long postId) {
+<span class="fc" id="L85">        final String url = buildCommentsUrl(postId);</span>
+<span class="fc" id="L86">        log.debug(&quot;Fetching comments for post from: {}&quot;, url);</span>
+<span class="fc" id="L87">        return executeWithErrorHandling(</span>
+<span class="fc" id="L88">            () -&gt; Optional.ofNullable(restTemplate.getForObject(url, Comment[].class))</span>
+<span class="fc" id="L89">                .map(Arrays::asList)</span>
+<span class="fc" id="L90">                .orElse(List.of()),</span>
+            &quot;comments for post with id &quot; + postId
+        );
+    }
+
+    // ========== URL Builders ==========
+
+    private String buildPostsUrl(final PostSearchCriteria criteria) {
+<span class="fc" id="L98">        final UriComponentsBuilder builder = UriComponentsBuilder</span>
+<span class="fc" id="L99">            .fromUriString(apiProperties.getBaseUrl())</span>
+<span class="fc" id="L100">            .path(apiProperties.getPostsPath());</span>
+
+<span class="fc bfc" id="L102" title="All 2 branches covered.">        if (criteria.getUserId() != null) {</span>
+<span class="fc" id="L103">            builder.queryParam(&quot;userId&quot;, criteria.getUserId());</span>
+        }
+<span class="fc bfc" id="L105" title="All 4 branches covered.">        if (criteria.getTitleContains() != null &amp;&amp; !criteria.getTitleContains().isBlank()) {</span>
+<span class="fc" id="L106">            builder.queryParam(&quot;title_like&quot;, criteria.getTitleContains().trim());</span>
+        }
+<span class="pc bpc" id="L108" title="1 of 4 branches missed.">        if (criteria.getPage() != null &amp;&amp; criteria.getSize() != null) {</span>
+<span class="fc" id="L109">            builder.queryParam(&quot;_page&quot;, criteria.getPage());</span>
+<span class="fc" id="L110">            builder.queryParam(&quot;_limit&quot;, criteria.getSize());</span>
+        }
+<span class="fc bfc" id="L112" title="All 2 branches covered.">        if (criteria.getSort() != null) {</span>
+<span class="fc" id="L113">            builder.queryParam(&quot;_sort&quot;, criteria.getSort());</span>
+<span class="fc bfc" id="L114" title="All 2 branches covered.">            builder.queryParam(&quot;_order&quot;, criteria.getOrder() != null ? criteria.getOrder() : &quot;asc&quot;);</span>
+        }
+
+<span class="fc" id="L117">        return builder.toUriString();</span>
+    }
+
+    private String buildPostByIdUrl(final Long id) {
+<span class="fc" id="L121">        return UriComponentsBuilder</span>
+<span class="fc" id="L122">            .fromUriString(apiProperties.getBaseUrl())</span>
+<span class="fc" id="L123">            .path(apiProperties.getPostsPath())</span>
+<span class="fc" id="L124">            .path(&quot;/{id}&quot;)</span>
+<span class="fc" id="L125">            .buildAndExpand(id)</span>
+<span class="fc" id="L126">            .toUriString();</span>
+    }
+
+    private String buildPostWithCommentsUrl(final Long postId) {
+<span class="fc" id="L130">        return UriComponentsBuilder</span>
+<span class="fc" id="L131">            .fromUriString(apiProperties.getBaseUrl())</span>
+<span class="fc" id="L132">            .path(apiProperties.getPostsPath())</span>
+<span class="fc" id="L133">            .path(&quot;/{id}&quot;)</span>
+<span class="fc" id="L134">            .queryParam(&quot;_embed&quot;, &quot;comments&quot;)</span>
+<span class="fc" id="L135">            .buildAndExpand(postId)</span>
+<span class="fc" id="L136">            .toUriString();</span>
+    }
+
+    private String buildCommentsUrl(final Long postId) {
+<span class="fc" id="L140">        return UriComponentsBuilder</span>
+<span class="fc" id="L141">            .fromUriString(apiProperties.getBaseUrl())</span>
+<span class="fc" id="L142">            .path(apiProperties.getPostsPath())</span>
+<span class="fc" id="L143">            .path(&quot;/{postId}&quot;)</span>
+<span class="fc" id="L144">            .path(apiProperties.getCommentsPath())</span>
+<span class="fc" id="L145">            .buildAndExpand(postId)</span>
+<span class="fc" id="L146">            .toUriString();</span>
+    }
+
+    // ========== Error Handling ==========
+
+    private &lt;T&gt; T executeWithErrorHandling(final Supplier&lt;T&gt; operation, final String resource) {
+        try {
+<span class="fc" id="L153">            return operation.get();</span>
+<span class="fc" id="L154">        } catch (final HttpClientErrorException e) {</span>
+<span class="fc" id="L155">            log.error(&quot;Client error fetching {}: {}&quot;, resource, e.getMessage());</span>
+<span class="fc" id="L156">            throw handleClientError(e, resource);</span>
+<span class="fc" id="L157">        } catch (final HttpServerErrorException e) {</span>
+<span class="fc" id="L158">            log.error(&quot;Server error fetching {}: {}&quot;, resource, e.getMessage());</span>
+<span class="fc" id="L159">            throw e;</span>
+<span class="fc" id="L160">        } catch (final ResourceAccessException e) {</span>
+<span class="fc" id="L161">            log.error(&quot;Connection error fetching {}: {}&quot;, resource, e.getMessage());</span>
+<span class="fc" id="L162">            throw e;</span>
+<span class="fc" id="L163">        } catch (final RestClientException e) {</span>
+<span class="fc" id="L164">            log.error(&quot;Unexpected error fetching {}: {}&quot;, resource, e.getMessage(), e);</span>
+<span class="fc" id="L165">            throw handleGenericError(e);</span>
+        }
+    }
+
+    private RuntimeException handleClientError(final HttpClientErrorException e, final String resource) {
+<span class="fc bfc" id="L170" title="All 2 branches covered.">        if (e.getStatusCode() == HttpStatus.TOO_MANY_REQUESTS) {</span>
+<span class="fc" id="L171">            log.warn(&quot;Rate limited, will retry: {}&quot;, e.getMessage());</span>
+<span class="fc" id="L172">            throw e;</span>
+        }
+<span class="fc" id="L174">        final int statusValue = e.getStatusCode().value();</span>
+<span class="fc bfc" id="L175" title="All 2 branches covered.">        return switch (statusValue) {</span>
+<span class="fc" id="L176">            case 404 -&gt; SystemException.notFound(&quot;Cannot find &quot; + resource, e);</span>
+<span class="fc" id="L177">            default -&gt; SystemException.withCause(e.getMessage(), &quot;API Error&quot;, statusValue, e);</span>
+        };
+    }
+
+    private SystemException handleGenericError(final RestClientException e) {
+<span class="fc" id="L182">        return SystemException.internalError(</span>
+            &quot;An unexpected error occurred while communicating with the API.&quot;, e);
+    }
+
+    // ========== Fallback Methods (invoked via reflection by Resilience4j @CircuitBreaker) ==========
+
+    private List&lt;AuditionPost&gt; getPostsFallback(final PostSearchCriteria criteria, final Throwable t) {
+<span class="nc" id="L189">        return handleFallback(&quot;getPosts&quot;, t);</span>
+    }
+
+    private AuditionPost getPostByIdFallback(final Long id, final Throwable t) {
+<span class="nc" id="L193">        return handleFallback(&quot;getPostById &quot; + id, t);</span>
+    }
+
+    private AuditionPost getPostWithCommentsFallback(final Long postId, final Throwable t) {
+<span class="nc" id="L197">        return handleFallback(&quot;getPostWithComments &quot; + postId, t);</span>
+    }
+
+    private List&lt;Comment&gt; getCommentsForPostFallback(final Long postId, final Throwable t) {
+<span class="nc" id="L201">        return handleFallback(&quot;getCommentsForPost &quot; + postId, t);</span>
+    }
+
+    private &lt;T&gt; T handleFallback(final String methodName, final Throwable t) {
+<span class="fc" id="L205">        log.warn(&quot;Circuit breaker fallback for {}: {}&quot;, methodName, t.getMessage());</span>
+<span class="fc" id="L206">        throw createFallbackException(t);</span>
+    }
+
+    private SystemException createFallbackException(final Throwable cause) {
+<span class="fc bfc" id="L210" title="All 2 branches covered.">        if (cause instanceof SystemException systemException) {</span>
+<span class="fc" id="L211">            throw systemException;</span>
+        }
+<span class="fc bfc" id="L213" title="All 2 branches covered.">        if (cause instanceof HttpClientErrorException.TooManyRequests) {</span>
+<span class="fc" id="L214">            return SystemException.rateLimitExceeded(&quot;API rate limit exceeded. Please try again later.&quot;, cause);</span>
+        }
+<span class="fc" id="L216">        return SystemException.serviceUnavailable(SERVICE_UNAVAILABLE_MESSAGE, cause);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

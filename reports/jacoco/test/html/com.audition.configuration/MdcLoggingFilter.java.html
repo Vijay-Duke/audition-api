@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MdcLoggingFilter.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">audition-api</a> &gt; <a href="index.source.html" class="el_package">com.audition.configuration</a> &gt; <span class="el_source">MdcLoggingFilter.java</span></div><h1>MdcLoggingFilter.java</h1><pre class="source lang-java linenums">package com.audition.configuration;
+
+import io.micrometer.tracing.Span;
+import io.micrometer.tracing.Tracer;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.UUID;
+import org.slf4j.MDC;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
+import org.springframework.stereotype.Component;
+
+/**
+ * Filter that enriches MDC with request context for structured logging.
+ * Adds requestId, clientIp, httpMethod, requestUri, and userAgent to MDC.
+ */
+@Component
+@Order(Ordered.HIGHEST_PRECEDENCE + 1)
+public class MdcLoggingFilter implements Filter {
+
+    private static final String REQUEST_ID = &quot;requestId&quot;;
+    private static final String CLIENT_IP = &quot;clientIp&quot;;
+    private static final String HTTP_METHOD = &quot;httpMethod&quot;;
+    private static final String REQUEST_URI = &quot;requestUri&quot;;
+    private static final String USER_AGENT = &quot;userAgent&quot;;
+    private static final String TRACE_ID = &quot;traceId&quot;;
+    private static final String SPAN_ID = &quot;spanId&quot;;
+
+    private static final String X_REQUEST_ID_HEADER = &quot;X-Request-ID&quot;;
+    private static final String X_FORWARDED_FOR_HEADER = &quot;X-Forwarded-For&quot;;
+    private static final String USER_AGENT_HEADER = &quot;User-Agent&quot;;
+
+    private final Tracer tracer;
+
+<span class="fc" id="L40">    public MdcLoggingFilter(final Tracer tracer) {</span>
+<span class="fc" id="L41">        this.tracer = tracer;</span>
+<span class="fc" id="L42">    }</span>
+
+    @Override
+    public void doFilter(final ServletRequest request, final ServletResponse response,
+                         final FilterChain chain) throws IOException, ServletException {
+<span class="fc" id="L47">        final HttpServletRequest httpRequest = (HttpServletRequest) request;</span>
+        try {
+<span class="fc" id="L49">            enrichMdc(httpRequest);</span>
+<span class="fc" id="L50">            chain.doFilter(request, response);</span>
+        } finally {
+<span class="fc" id="L52">            clearMdc();</span>
+        }
+<span class="fc" id="L54">    }</span>
+
+    private void enrichMdc(final HttpServletRequest request) {
+<span class="fc" id="L57">        MDC.put(REQUEST_ID, extractOrGenerateRequestId(request));</span>
+<span class="fc" id="L58">        MDC.put(CLIENT_IP, extractClientIp(request));</span>
+<span class="fc" id="L59">        MDC.put(HTTP_METHOD, request.getMethod());</span>
+<span class="fc" id="L60">        MDC.put(REQUEST_URI, request.getRequestURI());</span>
+<span class="fc" id="L61">        MDC.put(USER_AGENT, extractUserAgent(request));</span>
+
+<span class="fc" id="L63">        final Span currentSpan = tracer.currentSpan();</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        if (currentSpan != null) {</span>
+<span class="fc" id="L65">            MDC.put(TRACE_ID, currentSpan.context().traceId());</span>
+<span class="fc" id="L66">            MDC.put(SPAN_ID, currentSpan.context().spanId());</span>
+        }
+<span class="fc" id="L68">    }</span>
+
+    private String extractOrGenerateRequestId(final HttpServletRequest request) {
+<span class="fc" id="L71">        final String requestId = request.getHeader(X_REQUEST_ID_HEADER);</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        return requestId != null ? requestId : UUID.randomUUID().toString();</span>
+    }
+
+    private String extractClientIp(final HttpServletRequest request) {
+<span class="fc" id="L76">        final String forwardedFor = request.getHeader(X_FORWARDED_FOR_HEADER);</span>
+<span class="pc bpc" id="L77" title="1 of 4 branches missed.">        if (forwardedFor != null &amp;&amp; !forwardedFor.isEmpty()) {</span>
+<span class="fc" id="L78">            return forwardedFor.split(&quot;,&quot;)[0].trim();</span>
+        }
+<span class="fc" id="L80">        return request.getRemoteAddr();</span>
+    }
+
+    private String extractUserAgent(final HttpServletRequest request) {
+<span class="fc" id="L84">        final String userAgent = request.getHeader(USER_AGENT_HEADER);</span>
+<span class="fc bfc" id="L85" title="All 2 branches covered.">        return userAgent != null ? userAgent : &quot;unknown&quot;;</span>
+    }
+
+    private void clearMdc() {
+<span class="fc" id="L89">        MDC.remove(REQUEST_ID);</span>
+<span class="fc" id="L90">        MDC.remove(CLIENT_IP);</span>
+<span class="fc" id="L91">        MDC.remove(HTTP_METHOD);</span>
+<span class="fc" id="L92">        MDC.remove(REQUEST_URI);</span>
+<span class="fc" id="L93">        MDC.remove(USER_AGENT);</span>
+<span class="fc" id="L94">        MDC.remove(TRACE_ID);</span>
+<span class="fc" id="L95">        MDC.remove(SPAN_ID);</span>
+<span class="fc" id="L96">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

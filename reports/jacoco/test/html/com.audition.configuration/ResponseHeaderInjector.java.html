@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ResponseHeaderInjector.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">audition-api</a> &gt; <a href="index.source.html" class="el_package">com.audition.configuration</a> &gt; <span class="el_source">ResponseHeaderInjector.java</span></div><h1>ResponseHeaderInjector.java</h1><pre class="source lang-java linenums">package com.audition.configuration;
+
+import io.micrometer.tracing.Span;
+import io.micrometer.tracing.Tracer;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import org.springframework.stereotype.Component;
+
+/**
+ * Filter that injects distributed tracing headers into HTTP responses.
+ * Supports both W3C Trace Context (traceparent) and legacy headers for observability.
+ */
+@Component
+public class ResponseHeaderInjector implements Filter {
+
+    private static final String W3C_TRACEPARENT_HEADER = &quot;traceparent&quot;;
+    private static final String W3C_TRACESTATE_HEADER = &quot;tracestate&quot;;
+    private static final String W3C_VERSION = &quot;00&quot;;
+    private static final String W3C_FLAGS_SAMPLED = &quot;01&quot;;
+    private static final String TRACE_ID_HEADER = &quot;X-Trace-Id&quot;;
+    private static final String SPAN_ID_HEADER = &quot;X-Span-Id&quot;;
+    private static final int W3C_TRACE_ID_LENGTH = 32;
+
+    private final Tracer tracer;
+
+<span class="fc" id="L31">    public ResponseHeaderInjector(final Tracer tracer) {</span>
+<span class="fc" id="L32">        this.tracer = tracer;</span>
+<span class="fc" id="L33">    }</span>
+
+    @Override
+    public void doFilter(final ServletRequest request, final ServletResponse response,
+                         final FilterChain chain) throws IOException, ServletException {
+<span class="fc" id="L38">        final HttpServletResponse httpResponse = (HttpServletResponse) response;</span>
+<span class="fc" id="L39">        injectTraceHeaders(httpResponse);</span>
+<span class="fc" id="L40">        chain.doFilter(request, response);</span>
+<span class="fc" id="L41">    }</span>
+
+    private void injectTraceHeaders(final HttpServletResponse response) {
+<span class="fc" id="L44">        final Span currentSpan = tracer.currentSpan();</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        if (currentSpan != null) {</span>
+<span class="fc" id="L46">            final String traceId = currentSpan.context().traceId();</span>
+<span class="fc" id="L47">            final String spanId = currentSpan.context().spanId();</span>
+
+<span class="fc" id="L49">            final String traceparent = String.format(&quot;%s-%s-%s-%s&quot;,</span>
+<span class="fc" id="L50">                W3C_VERSION, padTraceId(traceId), spanId, W3C_FLAGS_SAMPLED);</span>
+<span class="fc" id="L51">            response.setHeader(W3C_TRACEPARENT_HEADER, traceparent);</span>
+<span class="fc" id="L52">            response.setHeader(W3C_TRACESTATE_HEADER, &quot;audition=&quot; + spanId);</span>
+<span class="fc" id="L53">            response.setHeader(TRACE_ID_HEADER, traceId);</span>
+<span class="fc" id="L54">            response.setHeader(SPAN_ID_HEADER, spanId);</span>
+        }
+<span class="fc" id="L56">    }</span>
+
+    /**
+     * Pads trace ID to 32 characters (128 bits) as required by W3C Trace Context.
+     * Some tracers use 64-bit trace IDs which need zero-padding.
+     */
+    private String padTraceId(final String traceId) {
+<span class="pc bpc" id="L63" title="1 of 2 branches missed.">        if (traceId.length() &lt; W3C_TRACE_ID_LENGTH) {</span>
+<span class="fc" id="L64">            return String.format(&quot;%&quot; + W3C_TRACE_ID_LENGTH + &quot;s&quot;, traceId).replace(' ', '0');</span>
+        }
+<span class="nc" id="L66">        return traceId;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

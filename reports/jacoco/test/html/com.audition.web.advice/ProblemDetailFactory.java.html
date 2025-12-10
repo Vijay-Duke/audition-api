@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProblemDetailFactory.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">audition-api</a> &gt; <a href="index.source.html" class="el_package">com.audition.web.advice</a> &gt; <span class="el_source">ProblemDetailFactory.java</span></div><h1>ProblemDetailFactory.java</h1><pre class="source lang-java linenums">package com.audition.web.advice;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+
+import com.audition.common.exception.SystemException;
+import io.micrometer.common.util.StringUtils;
+import java.time.Instant;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ProblemDetail;
+import org.springframework.stereotype.Component;
+import org.springframework.validation.FieldError;
+
+/**
+ * Factory for creating RFC 7807 ProblemDetail responses.
+ */
+@Component
+<span class="fc" id="L18">public class ProblemDetailFactory {</span>
+
+    public static final String DEFAULT_TITLE = &quot;API Error Occurred&quot;;
+    public static final String DEFAULT_MESSAGE = &quot;API Error occurred. Please contact support or administrator.&quot;;
+
+    private static final String HEADER_RETRY_AFTER = &quot;Retry-After&quot;;
+    private static final String HEADER_RATELIMIT_LIMIT = &quot;X-RateLimit-Limit&quot;;
+    private static final String HEADER_RATELIMIT_REMAINING = &quot;X-RateLimit-Remaining&quot;;
+    private static final String HEADER_RATELIMIT_RESET = &quot;X-RateLimit-Reset&quot;;
+    private static final int DEFAULT_RETRY_AFTER_SECONDS = 60;
+
+    public ProblemDetail createProblemDetail(final Exception exception, final HttpStatusCode statusCode) {
+<span class="fc" id="L30">        final ProblemDetail problemDetail = ProblemDetail.forStatus(statusCode);</span>
+<span class="fc" id="L31">        problemDetail.setDetail(getMessageFromException(exception));</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">        if (exception instanceof SystemException systemEx) {</span>
+<span class="fc" id="L33">            problemDetail.setTitle(systemEx.getTitle());</span>
+        } else {
+<span class="fc" id="L35">            problemDetail.setTitle(DEFAULT_TITLE);</span>
+        }
+<span class="fc" id="L37">        return problemDetail;</span>
+    }
+
+    public ProblemDetail createValidationProblemDetail(final String message) {
+<span class="fc" id="L41">        final ProblemDetail problemDetail = ProblemDetail.forStatus(BAD_REQUEST);</span>
+<span class="fc" id="L42">        problemDetail.setTitle(&quot;Validation Error&quot;);</span>
+<span class="fc" id="L43">        problemDetail.setDetail(message);</span>
+<span class="fc" id="L44">        return problemDetail;</span>
+    }
+
+    public String formatFieldError(final FieldError fieldError) {
+<span class="fc" id="L48">        final String field = fieldError.getField();</span>
+<span class="fc" id="L49">        final Object rejectedValue = fieldError.getRejectedValue();</span>
+
+<span class="pc bpc" id="L51" title="1 of 4 branches missed.">        if (fieldError.getCode() != null &amp;&amp; fieldError.getCode().contains(&quot;typeMismatch&quot;)) {</span>
+<span class="fc" id="L52">            return String.format(&quot;'%s' is not a valid value for '%s'. Please provide a valid number.&quot;,</span>
+                rejectedValue, field);
+        }
+
+<span class="fc" id="L56">        return field + &quot;: &quot; + fieldError.getDefaultMessage();</span>
+    }
+
+    public HttpHeaders createRateLimitHeaders() {
+<span class="fc" id="L60">        final HttpHeaders headers = new HttpHeaders();</span>
+<span class="fc" id="L61">        headers.set(HEADER_RETRY_AFTER, String.valueOf(DEFAULT_RETRY_AFTER_SECONDS));</span>
+<span class="fc" id="L62">        headers.set(HEADER_RATELIMIT_LIMIT, &quot;100&quot;);</span>
+<span class="fc" id="L63">        headers.set(HEADER_RATELIMIT_REMAINING, &quot;0&quot;);</span>
+<span class="fc" id="L64">        headers.set(HEADER_RATELIMIT_RESET, String.valueOf(Instant.now().plusSeconds(DEFAULT_RETRY_AFTER_SECONDS).getEpochSecond()));</span>
+<span class="fc" id="L65">        return headers;</span>
+    }
+
+    private String getMessageFromException(final Exception exception) {
+<span class="fc bfc" id="L69" title="All 2 branches covered.">        if (StringUtils.isNotBlank(exception.getMessage())) {</span>
+<span class="fc" id="L70">            return exception.getMessage();</span>
+        }
+<span class="fc" id="L72">        return DEFAULT_MESSAGE;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

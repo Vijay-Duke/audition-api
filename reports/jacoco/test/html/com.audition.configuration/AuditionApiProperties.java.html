@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AuditionApiProperties.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">audition-api</a> &gt; <a href="index.source.html" class="el_package">com.audition.configuration</a> &gt; <span class="el_source">AuditionApiProperties.java</span></div><h1>AuditionApiProperties.java</h1><pre class="source lang-java linenums">package com.audition.configuration;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.validation.annotation.Validated;
+
+/**
+ * Configuration properties for the Audition API integration.
+ * Provides type-safe access to externalized configuration for API endpoints and timeouts.
+ */
+<span class="pc bpc" id="L13" title="20 of 42 branches missed.">@Data</span>
+@ConfigurationProperties(prefix = &quot;audition.api&quot;)
+@Validated
+public class AuditionApiProperties {
+
+    private static final int DEFAULT_CONNECT_TIMEOUT_MS = 5_000;
+    private static final int DEFAULT_READ_TIMEOUT_MS = 10_000;
+
+    @NotBlank(message = &quot;Base URL must not be blank&quot;)
+<span class="fc" id="L22">    private String baseUrl;</span>
+
+    @NotBlank(message = &quot;Posts path must not be blank&quot;)
+<span class="fc" id="L25">    private String postsPath;</span>
+
+    @NotBlank(message = &quot;Comments path must not be blank&quot;)
+<span class="fc" id="L28">    private String commentsPath;</span>
+
+<span class="fc" id="L30">    @NotBlank(message = &quot;Circuit breaker name must not be blank&quot;)</span>
+<span class="fc" id="L31">    private String circuitBreakerName = &quot;auditionApi&quot;;</span>
+
+<span class="fc" id="L33">    @Positive(message = &quot;Connect timeout must be positive&quot;)</span>
+<span class="fc" id="L34">    private int connectTimeoutMs = DEFAULT_CONNECT_TIMEOUT_MS;</span>
+
+<span class="fc" id="L36">    @Positive(message = &quot;Read timeout must be positive&quot;)</span>
+<span class="fc" id="L37">    private int readTimeoutMs = DEFAULT_READ_TIMEOUT_MS;</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,364 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Posts",
+      "description": "Operations for managing posts and comments (API v1)"
+    }
+  ],
+  "paths": {
+    "/api/v1/posts": {
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "Get posts",
+        "description": "Retrieves posts with optional filtering by userId, title search, pagination, and sorting",
+        "operationId": "getPosts",
+        "parameters": [
+          {
+            "name": "criteria",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/PostSearchCriteria"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Invalid request parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Successfully retrieved posts",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AuditionPost"
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Upstream service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/posts/{postId}/comments": {
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "Get comments for post",
+        "description": "Retrieves all comments associated with a specific post",
+        "operationId": "getCommentsForPost",
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "description": "Post ID",
+            "required": true,
+            "schema": {
+              "minimum": 1,
+              "type": "string"
+            },
+            "example": 1
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully retrieved comments",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Comment"
+                  }
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Upstream service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid post ID (must be positive integer)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/posts/{id}": {
+      "get": {
+        "tags": [
+          "Posts"
+        ],
+        "summary": "Get post by ID",
+        "description": "Retrieves a single post by its ID. Use ?include\u003dcomments to embed comments in the response.",
+        "operationId": "getPostById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Post ID",
+            "required": true,
+            "schema": {
+              "minimum": 1,
+              "type": "string"
+            },
+            "example": 1
+          },
+          {
+            "name": "include",
+            "in": "query",
+            "description": "Related resources to include (e.g., \u0027comments\u0027)",
+            "required": false,
+            "schema": {
+              "type": "string"
+            },
+            "example": "comments"
+          }
+        ],
+        "responses": {
+          "503": {
+            "description": "Upstream service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid post ID (must be positive integer)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Post not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Successfully retrieved post",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuditionPost"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "PostSearchCriteria": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "minimum": 1,
+            "type": "integer",
+            "description": "Filter by user ID",
+            "format": "int32",
+            "example": 1
+          },
+          "titleContains": {
+            "type": "string",
+            "description": "Filter posts containing this text in title",
+            "example": "sunt"
+          },
+          "page": {
+            "minimum": 1,
+            "type": "integer",
+            "description": "Page number (1-based). Must be used together with \u0027size\u0027",
+            "format": "int32",
+            "example": 1
+          },
+          "size": {
+            "maximum": 100,
+            "minimum": 1,
+            "type": "integer",
+            "description": "Number of items per page (max 100). Must be used together with \u0027page\u0027",
+            "format": "int32",
+            "example": 10
+          },
+          "sort": {
+            "pattern": "^(id|userId|title)$",
+            "type": "string",
+            "description": "Field to sort by",
+            "example": "id",
+            "enum": [
+              "id",
+              "userId",
+              "title"
+            ]
+          },
+          "order": {
+            "pattern": "^(?i)(asc|desc)$",
+            "type": "string",
+            "description": "Sort order",
+            "example": "asc",
+            "enum": [
+              "asc",
+              "desc"
+            ]
+          }
+        },
+        "description": "Search criteria for filtering, paginating, and sorting posts"
+      },
+      "ProblemDetail": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "format": "uri"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "detail": {
+            "type": "string"
+          },
+          "instance": {
+            "type": "string",
+            "format": "uri"
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "AuditionPost": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "description": "ID of the user who created the post",
+            "format": "int32",
+            "example": 1
+          },
+          "id": {
+            "type": "integer",
+            "description": "Unique identifier of the post",
+            "format": "int32",
+            "example": 1
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the post",
+            "example": "sunt aut facere repellat provident"
+          },
+          "body": {
+            "type": "string",
+            "description": "Body content of the post",
+            "example": "quia et suscipit..."
+          },
+          "comments": {
+            "type": "array",
+            "description": "Comments on this post (only included when include\u003dcomments)",
+            "items": {
+              "$ref": "#/components/schemas/Comment"
+            }
+          }
+        },
+        "description": "A post from the audition API"
+      },
+      "Comment": {
+        "type": "object",
+        "properties": {
+          "postId": {
+            "type": "integer",
+            "description": "ID of the post this comment belongs to",
+            "format": "int32",
+            "example": 1
+          },
+          "id": {
+            "type": "integer",
+            "description": "Unique identifier of the comment",
+            "format": "int32",
+            "example": 1
+          },
+          "name": {
+            "type": "string",
+            "description": "Name/title of the comment",
+            "example": "id labore ex et quam laborum"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email of the commenter",
+            "example": "Eliseo@gardner.biz"
+          },
+          "body": {
+            "type": "string",
+            "description": "Body content of the comment",
+            "example": "laudantium enim quasi..."
+          }
+        },
+        "description": "A comment on a post"
+      }
+    }
+  }
+}

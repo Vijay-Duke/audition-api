@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AuditionService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">audition-api</a> &gt; <a href="index.source.html" class="el_package">com.audition.service</a> &gt; <span class="el_source">AuditionService.java</span></div><h1>AuditionService.java</h1><pre class="source lang-java linenums">package com.audition.service;
+
+import com.audition.integration.AuditionIntegrationClient;
+import com.audition.model.AuditionPost;
+import com.audition.model.Comment;
+import com.audition.model.PostSearchCriteria;
+import java.util.List;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AuditionService {
+
+    private final AuditionIntegrationClient auditionIntegrationClient;
+
+<span class="fc" id="L15">    public AuditionService(final AuditionIntegrationClient auditionIntegrationClient) {</span>
+<span class="fc" id="L16">        this.auditionIntegrationClient = auditionIntegrationClient;</span>
+<span class="fc" id="L17">    }</span>
+
+    /**
+     * Retrieves posts based on the provided search criteria.
+     *
+     * @param criteria the search criteria including filters, pagination, and sorting options
+     * @return a list of posts matching the criteria, or an empty list if none found
+     */
+    public List&lt;AuditionPost&gt; getPosts(final PostSearchCriteria criteria) {
+<span class="fc" id="L26">        return auditionIntegrationClient.getPosts(criteria);</span>
+    }
+
+    /**
+     * Retrieves a single post by its ID, optionally including comments.
+     *
+     * @param postId the ID of the post to retrieve
+     * @param includeComments whether to include comments in the response
+     * @return the post with the specified ID, with comments if requested
+     * @throws com.audition.common.exception.SystemException with status 404 if post not found
+     */
+    public AuditionPost getPostById(final Long postId, final boolean includeComments) {
+<span class="fc bfc" id="L38" title="All 2 branches covered.">        return includeComments</span>
+<span class="fc" id="L39">            ? auditionIntegrationClient.getPostWithComments(postId)</span>
+<span class="fc" id="L40">            : auditionIntegrationClient.getPostById(postId);</span>
+    }
+
+    /**
+     * Retrieves all comments for a specific post.
+     *
+     * @param postId the ID of the post whose comments to retrieve
+     * @return a list of comments for the specified post, or an empty list if none exist
+     */
+    public List&lt;Comment&gt; getCommentsForPost(final Long postId) {
+<span class="fc" id="L50">        return auditionIntegrationClient.getCommentsForPost(postId);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
