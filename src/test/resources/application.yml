@@ -4,9 +4,42 @@ spring:
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+
 application:
   connection:
     read-timeout: 5000
     write-timeout: 5000
     connect-timeout: 5000
     response-timeout: 5000
+
+audition:
+  api:
+    base-url: https://jsonplaceholder.typicode.com
+    posts-path: /posts
+    comments-path: /comments
+    circuit-breaker-name: auditionApi
+    connect-timeout-ms: 5000
+    read-timeout-ms: 10000
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      auditionApi:
+        slidingWindowSize: 100
+        failureRateThreshold: 100
+        waitDurationInOpenState: 1s
+        permittedNumberOfCallsInHalfOpenState: 100
+        registerHealthIndicator: false
+  retry:
+    instances:
+      auditionApi:
+        maxAttempts: 1
+        waitDuration: 100ms
+        retryExceptions:
+          - org.springframework.web.client.HttpServerErrorException
+          - org.springframework.web.client.ResourceAccessException
+          - org.springframework.web.client.HttpClientErrorException$TooManyRequests
+  timelimiter:
+    instances:
+      auditionApi:
+        timeoutDuration: 10s

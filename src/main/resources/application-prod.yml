@@ -1,0 +1,59 @@
+# Production profile configuration
+# Activate with: --spring.profiles.active=prod
+
+spring:
+  devtools:
+    restart:
+      enabled: false
+    livereload:
+      enabled: false
+
+# Production logging - minimal, structured
+logging:
+  level:
+    root: WARN
+    com.audition: INFO
+    org.springframework: WARN
+    org.springframework.web.client.RestTemplate: WARN
+
+# Production timeouts - longer for reliability
+audition:
+  api:
+    connect-timeout-ms: 5000
+    read-timeout-ms: 15000
+
+# Stricter circuit breaker settings for production
+resilience4j:
+  circuitbreaker:
+    instances:
+      "[${audition.api.circuit-breaker-name}]":
+        slidingWindowSize: 20
+        failureRateThreshold: 50
+        waitDurationInOpenState: 60s
+        permittedNumberOfCallsInHalfOpenState: 5
+        slowCallRateThreshold: 80
+        slowCallDurationThreshold: 3s
+  retry:
+    instances:
+      "[${audition.api.circuit-breaker-name}]":
+        maxAttempts: 3
+        waitDuration: 1s
+        enableExponentialBackoff: true
+        exponentialBackoffMultiplier: 2
+
+# Production actuator - restricted access
+management:
+  endpoint:
+    health:
+      show-details: when-authorized
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+
+server:
+  # Production server settings
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/plain
+    min-response-size: 1024
