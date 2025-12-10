@@ -8,8 +8,7 @@ import com.audition.common.exception.SystemException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import java.util.stream.Collectors;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -21,10 +20,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+@Slf4j
 @ControllerAdvice
 public class ExceptionControllerAdvice {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ExceptionControllerAdvice.class);
     private static final String STATUS_CODE_ERROR = "Error Code from Exception could not be mapped to a valid HttpStatus Code - {}";
 
     private final ProblemDetailFactory problemDetailFactory;
@@ -40,7 +39,6 @@ public class ExceptionControllerAdvice {
 
     @ExceptionHandler(BindException.class)
     ProblemDetail handleBindException(final BindException e) {
-        LOG.warn("Validation error: {}", e.getMessage());
         final String message = e.getBindingResult().getAllErrors().stream()
             .map(error -> {
                 if (error instanceof FieldError fieldError) {
@@ -49,30 +47,31 @@ public class ExceptionControllerAdvice {
                 return error.getDefaultMessage();
             })
             .collect(Collectors.joining("; "));
+        log.warn("Validation error: {}", message);
         return problemDetailFactory.createValidationProblemDetail(message);
     }
 
     @ExceptionHandler(ConstraintViolationException.class)
     ProblemDetail handleConstraintViolationException(final ConstraintViolationException e) {
-        LOG.warn("Constraint violation: {}", e.getMessage());
         final String message = e.getConstraintViolations().stream()
             .map(ConstraintViolation::getMessage)
             .collect(Collectors.joining("; "));
+        log.warn("Constraint violation: {}", message);
         return problemDetailFactory.createValidationProblemDetail(message);
     }
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     ProblemDetail handleTypeMismatchException(final MethodArgumentTypeMismatchException e) {
-        LOG.warn("Type mismatch: {}", e.getMessage());
         final String message = String.format("Invalid value '%s' for parameter '%s'. Please provide a valid number.",
             e.getValue(), e.getName());
+        log.warn("Type mismatch: {}", message);
         return problemDetailFactory.createValidationProblemDetail(message);
     }
 
     @ExceptionHandler(Exception.class)
     ProblemDetail handleMainException(final Exception e) {
         final HttpStatusCode status = getHttpStatusCodeFromException(e);
-        LOG.error("Unhandled exception occurred: {}", e.getMessage(), e);
+        log.error("Unhandled exception occurred: {}", e.getMessage(), e);
         return problemDetailFactory.createProblemDetail(e, status);
     }
 
@@ -93,11 +92,11 @@ public class ExceptionControllerAdvice {
 
     private void logSystemException(final SystemException e, final HttpStatusCode status) {
         if (status.is5xxServerError()) {
-            LOG.error("System exception occurred [{}]: {}", e.getTitle(), e.getMessage(), e);
+            log.error("System exception occurred [{}]: {}", e.getTitle(), e.getMessage(), e);
         } else if (status.is4xxClientError()) {
-            LOG.warn("Client error [{}]: {}", e.getTitle(), e.getMessage());
+            log.warn("Client error [{}]: {}", e.getTitle(), e.getMessage());
         } else {
-            LOG.info("System exception [{}]: {}", e.getTitle(), e.getMessage());
+            log.info("System exception [{}]: {}", e.getTitle(), e.getMessage());
         }
     }
 
@@ -105,7 +104,7 @@ public class ExceptionControllerAdvice {
         try {
             return HttpStatusCode.valueOf(exception.getStatusCode());
         } catch (final IllegalArgumentException iae) {
-            LOG.info(STATUS_CODE_ERROR, exception.getStatusCode());
+            log.info(STATUS_CODE_ERROR, exception.getStatusCode());
             return INTERNAL_SERVER_ERROR;
         }
     }

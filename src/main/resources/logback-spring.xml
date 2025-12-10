@@ -122,6 +122,9 @@
     </rollingPolicy>
   </appender>
 
+  <!-- Suppress verbose Spring exception resolver logging (we handle this in ExceptionControllerAdvice) -->
+  <logger name="org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver" level="ERROR"/>
+
   <!-- Profile-specific logging configuration -->
   <springProfile name="local,dev,test">
     <root level="INFO">
