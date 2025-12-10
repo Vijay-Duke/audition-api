@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "audition-api-collection",
 		"name": "Audition API",
-		"description": "REST API for managing posts and comments from JSONPlaceholder.\n\n## Base URL\n- Local: `http://localhost:8080`\n\n## API Version\nAll endpoints are versioned under `/api/v1/`\n\n## Features\n- Filtering by userId and title\n- Pagination support\n- Sorting by id, userId, or title\n- Embedded comments\n- Circuit breaker resilience",
+		"description": "REST API for managing posts and comments from JSONPlaceholder.\n\n## Base URL\n- Local: `http://localhost:8080`\n\n## API Version\nAll endpoints are versioned under `/api/v1/`\n\n## Features\n- Filtering by userId and title\n- Pagination support\n- Sorting by id, userId, or title\n- Include related resources (comments)\n- Circuit breaker resilience",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"variable": [
@@ -231,18 +231,18 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseUrl}}/api/v1/posts/1?embed=true",
+							"raw": "{{baseUrl}}/api/v1/posts/1?include=comments",
 							"host": ["{{baseUrl}}"],
 							"path": ["api", "v1", "posts", "1"],
 							"query": [
 								{
-									"key": "embed",
-									"value": "true",
-									"description": "Set to true to include comments in the response"
+									"key": "include",
+									"value": "comments",
+									"description": "Related resources to include (JSON:API style)"
 								}
 							]
 						},
-						"description": "Retrieves a single post by its ID with embedded comments."
+						"description": "Retrieves a single post by its ID with included comments (JSON:API style)."
 					},
 					"response": []
 				}

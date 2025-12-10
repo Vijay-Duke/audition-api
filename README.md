@@ -121,7 +121,7 @@ All endpoints are versioned under `/api/v1/`:
 |--------|----------|-------------|
 | GET | `/api/v1/posts` | Retrieve posts with optional filtering, pagination, and sorting |
 | GET | `/api/v1/posts/{id}` | Get a single post by ID |
-| GET | `/api/v1/posts/{id}?embed=true` | Get a post with embedded comments |
+| GET | `/api/v1/posts/{id}?include=comments` | Get a post with embedded comments |
 | GET | `/api/v1/posts/{postId}/comments` | Get all comments for a post |
 
 #### Query Parameters for `/posts`
