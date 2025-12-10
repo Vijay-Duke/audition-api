@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
@@ -37,7 +38,7 @@ public class RestTemplateLoggingInterceptor implements ClientHttpRequestIntercep
     private void logRequest(final HttpRequest request, final byte[] body) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("==> Request: {} {}", request.getMethod(), request.getURI());
-            LOG.debug("==> Headers: {}", request.getHeaders());
+            LOG.debug("==> Headers:\n{}", formatHeaders(request.getHeaders()));
             if (body != null && body.length > 0) {
                 final String bodyStr = new String(body, StandardCharsets.UTF_8);
                 LOG.debug("==> Body: {}", truncateIfNeeded(bodyStr));
@@ -54,11 +55,19 @@ public class RestTemplateLoggingInterceptor implements ClientHttpRequestIntercep
                 request.getURI(),
                 response.getStatusCode(),
                 durationMs);
-            LOG.debug("<== Headers: {}", response.getHeaders());
+            LOG.debug("<== Headers:\n{}", formatHeaders(response.getHeaders()));
             final byte[] bodyBytes = StreamUtils.copyToByteArray(response.getBody());
             final String bodyStr = new String(bodyBytes, StandardCharsets.UTF_8);
             LOG.debug("<== Body: {}", truncateIfNeeded(bodyStr));
         }
+    }
+
+    private String formatHeaders(final HttpHeaders headers) {
+        final StringBuilder sb = new StringBuilder();
+        headers.forEach((name, values) ->
+            values.forEach(value -> sb.append("      ").append(name).append(": ").append(value).append('\n'))
+        );
+        return sb.toString().stripTrailing();
     }
 
     private String truncateIfNeeded(final String text) {

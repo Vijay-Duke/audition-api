@@ -165,6 +165,7 @@ All endpoints are versioned under `/api/v1/`:
 - SLF4J with Logback
 - Structured JSON logging for production (`logback-spring.xml`)
 - Request/response logging via `RestTemplateLoggingInterceptor`
+  - Note: `AuditionLogger` was removed in favor of `RestTemplateLoggingInterceptor` which integrates directly with RestTemplate as an interceptor
 
 To see outgoing HTTP request/response logs (to JSONPlaceholder), enable DEBUG level:
 ```bash
