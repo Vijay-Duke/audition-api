@@ -10,19 +10,33 @@ spring:
       - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
   mvc:
     throw-exception-if-no-handler-found: true
-  sleuth:
-    sampler:
-      probability: 1.0
+
 server:
   max-http-request-header-size: 16KB
+
 management:
   tracing:
     sampling:
       probability: 1.0
+    propagation:
+      type: w3c
   endpoints:
     web:
       exposure:
-        include: '*' #TODO enable only info and health for security purposes. Consider that we may want to still access other actuator endpoints securely.
+        include: health,info,prometheus
+  endpoint:
+    health:
+      show-details: when-authorized
+
 logging:
   pattern:
     level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+
+audition:
+  api:
+    base-url: https://jsonplaceholder.typicode.com
+    posts-path: /posts
+    comments-path: /comments
+    circuit-breaker-name: auditionApi
+    connect-timeout-ms: 5000
+    read-timeout-ms: 10000
