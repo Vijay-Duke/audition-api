@@ -3,6 +3,7 @@ package com.audition.service;
 import com.audition.integration.AuditionIntegrationClient;
 import com.audition.model.AuditionPost;
 import com.audition.model.Comment;
+import com.audition.model.PostSearchCriteria;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +16,8 @@ public class AuditionService {
         this.auditionIntegrationClient = auditionIntegrationClient;
     }
 
-    public List<AuditionPost> getPosts() {
-        return auditionIntegrationClient.getPosts();
+    public List<AuditionPost> getPosts(final PostSearchCriteria criteria) {
+        return auditionIntegrationClient.getPosts(criteria);
     }
 
     public AuditionPost getPostById(final Long postId, final boolean includeComments) {
