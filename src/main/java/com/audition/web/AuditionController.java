@@ -78,7 +78,7 @@ public class AuditionController {
      * <p>Uses JSON:API style inclusion pattern: {@code ?include=comments}
      * This allows fetching related resources in a single request to reduce round trips.</p>
      *
-     * @param postId the ID of the post to retrieve (must be a positive integer)
+     * @param postId the ID of the post to retrieve (must be a positive number)
      * @param include comma-separated list of related resources to include (supported: "comments")
      * @return the post with the specified ID
      * @throws com.audition.common.exception.SystemException with status 404 if post not found
@@ -89,7 +89,7 @@ public class AuditionController {
     )
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Successfully retrieved post"),
-        @ApiResponse(responseCode = "400", description = "Invalid post ID (must be positive integer)",
+        @ApiResponse(responseCode = "400", description = "Invalid post ID (must be positive number)",
             content = @Content(schema = @Schema(implementation = ProblemDetail.class))),
         @ApiResponse(responseCode = "404", description = "Post not found",
             content = @Content(schema = @Schema(implementation = ProblemDetail.class))),
@@ -99,7 +99,7 @@ public class AuditionController {
     @GetMapping(value = "/posts/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public AuditionPost getPostById(
             @Parameter(description = "Post ID", example = "1", schema = @Schema(minimum = "1"))
-            @PathVariable("id") @Positive(message = "Post id must be a positive integer") final Long postId,
+            @PathVariable("id") @Positive(message = "Post id must be a positive number") final Long postId,
             @Parameter(description = "Related resources to include (e.g., 'comments')", example = "comments")
             @RequestParam(value = "include", required = false) final String include) {
         final boolean includeComments = "comments".equalsIgnoreCase(include);
@@ -112,7 +112,7 @@ public class AuditionController {
     /**
      * Retrieves all comments for a specific post.
      *
-     * @param postId the ID of the post whose comments to retrieve (must be a positive integer)
+     * @param postId the ID of the post whose comments to retrieve (must be a positive number)
      * @return a list of comments for the specified post, or an empty list if none exist
      */
     @Operation(
@@ -121,7 +121,7 @@ public class AuditionController {
     )
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Successfully retrieved comments"),
-        @ApiResponse(responseCode = "400", description = "Invalid post ID (must be positive integer)",
+        @ApiResponse(responseCode = "400", description = "Invalid post ID (must be positive number)",
             content = @Content(schema = @Schema(implementation = ProblemDetail.class))),
         @ApiResponse(responseCode = "503", description = "Upstream service unavailable",
             content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
@@ -129,7 +129,7 @@ public class AuditionController {
     @GetMapping(value = "/posts/{postId}/comments", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Comment> getCommentsForPost(
             @Parameter(description = "Post ID", example = "1", schema = @Schema(minimum = "1"))
-            @PathVariable("postId") @Positive(message = "Post id must be a positive integer") final Long postId) {
+            @PathVariable("postId") @Positive(message = "Post id must be a positive number") final Long postId) {
         LOG.debug("Getting comments for post: {}", postId);
         final List<Comment> comments = auditionService.getCommentsForPost(postId);
         LOG.debug("Returning {} comments for post: {}", comments.size(), postId);
