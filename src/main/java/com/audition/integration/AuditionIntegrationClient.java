@@ -42,7 +42,7 @@ public class AuditionIntegrationClient {
                 .orElse(List.of());
         } catch (final RestClientException e) {
             log.error("Error fetching posts: {}", e.getMessage());
-            throw new SystemException("Error fetching posts: " + e.getMessage(), 500);
+            throw SystemException.internalError("Error fetching posts: " + e.getMessage(), e);
         }
     }
 
@@ -51,16 +51,16 @@ public class AuditionIntegrationClient {
         log.debug("Fetching post by id from: {}", url);
         try {
             return Optional.ofNullable(restTemplate.getForObject(url, AuditionPost.class))
-                .orElseThrow(() -> new SystemException("Cannot find a Post with id " + id, "Resource Not Found", 404));
+                .orElseThrow(() -> SystemException.notFound("Cannot find a Post with id " + id));
         } catch (final HttpClientErrorException e) {
             log.error("Client error fetching post {}: {}", id, e.getMessage());
             if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
-                throw new SystemException("Cannot find a Post with id " + id, "Resource Not Found", 404);
+                throw SystemException.notFound("Cannot find a Post with id " + id, e);
             }
-            throw new SystemException(e.getMessage(), "API Error", e.getStatusCode().value());
+            throw SystemException.withCause(e.getMessage(), "API Error", e.getStatusCode().value(), e);
         } catch (final RestClientException e) {
             log.error("Error fetching post {}: {}", id, e.getMessage());
-            throw new SystemException("Error fetching post: " + e.getMessage(), 500);
+            throw SystemException.internalError("Error fetching post: " + e.getMessage(), e);
         }
     }
 
@@ -69,16 +69,16 @@ public class AuditionIntegrationClient {
         log.debug("Fetching post with comments from: {}", url);
         try {
             return Optional.ofNullable(restTemplate.getForObject(url, AuditionPost.class))
-                .orElseThrow(() -> new SystemException("Cannot find a Post with id " + postId, "Resource Not Found", 404));
+                .orElseThrow(() -> SystemException.notFound("Cannot find a Post with id " + postId));
         } catch (final HttpClientErrorException e) {
             log.error("Client error fetching post {} with comments: {}", postId, e.getMessage());
             if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
-                throw new SystemException("Cannot find a Post with id " + postId, "Resource Not Found", 404);
+                throw SystemException.notFound("Cannot find a Post with id " + postId, e);
             }
-            throw new SystemException(e.getMessage(), "API Error", e.getStatusCode().value());
+            throw SystemException.withCause(e.getMessage(), "API Error", e.getStatusCode().value(), e);
         } catch (final RestClientException e) {
             log.error("Error fetching post {} with comments: {}", postId, e.getMessage());
-            throw new SystemException("Error fetching post: " + e.getMessage(), 500);
+            throw SystemException.internalError("Error fetching post: " + e.getMessage(), e);
         }
     }
 
@@ -91,7 +91,7 @@ public class AuditionIntegrationClient {
                 .orElse(List.of());
         } catch (final RestClientException e) {
             log.error("Error fetching comments for post {}: {}", postId, e.getMessage());
-            throw new SystemException("Error fetching comments: " + e.getMessage(), 500);
+            throw SystemException.internalError("Error fetching comments: " + e.getMessage(), e);
         }
     }
 
