@@ -44,6 +44,7 @@ public class WebServiceConfiguration implements WebMvcConfigurer {
                 ? new MappingJackson2HttpMessageConverter(objectMapper)
                 : converter
         );
+        restTemplate.getInterceptors().add(new RestTemplateLoggingInterceptor());
         return restTemplate;
     }
 
