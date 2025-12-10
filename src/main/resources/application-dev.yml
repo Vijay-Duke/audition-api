@@ -1,0 +1,45 @@
+# Development profile configuration
+# Activate with: --spring.profiles.active=dev
+
+spring:
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: true
+
+# More verbose logging for development
+logging:
+  level:
+    com.audition: DEBUG
+    org.springframework.web: DEBUG
+    org.springframework.web.client.RestTemplate: DEBUG
+
+# Shorter timeouts for faster feedback during development
+audition:
+  api:
+    connect-timeout-ms: 3000
+    read-timeout-ms: 5000
+
+# Relaxed circuit breaker settings for development
+resilience4j:
+  circuitbreaker:
+    instances:
+      "[${audition.api.circuit-breaker-name}]":
+        slidingWindowSize: 5
+        failureRateThreshold: 70
+        waitDurationInOpenState: 10s
+  retry:
+    instances:
+      "[${audition.api.circuit-breaker-name}]":
+        maxAttempts: 2
+        waitDuration: 200ms
+
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: "*"
