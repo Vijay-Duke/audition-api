@@ -10,6 +10,7 @@ import io.github.resilience4j.retry.annotation.Retry;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -22,12 +23,15 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 /**
  * Integration client for the JSONPlaceholder API.
- * Provides methods to fetch posts and comments with filtering, pagination,
- * circuit breaker, and retry support.
+ * Provides methods to fetch posts and comments with circuit breaker and retry support.
  */
 @Slf4j
 @Component
+@SuppressWarnings({"PMD.UnusedPrivateMethod", "PMD.UnusedFormalParameter"}) // Resilience4j fallbacks invoked via reflection
 public class AuditionIntegrationClient {
+
+    private static final String SERVICE_UNAVAILABLE_MESSAGE = "Service temporarily unavailable. Please try again later.";
+    private static final String CIRCUIT_BREAKER_NAME = "${audition.api.circuit-breaker-name}";
 
     private final RestTemplate restTemplate;
     private final AuditionApiProperties apiProperties;
@@ -38,135 +42,57 @@ public class AuditionIntegrationClient {
         this.apiProperties = apiProperties;
     }
 
-    @CircuitBreaker(name = "#{@auditionApiProperties.circuitBreakerName}", fallbackMethod = "getPostsFallback")
-    @Retry(name = "#{@auditionApiProperties.circuitBreakerName}")
+    @Retry(name = CIRCUIT_BREAKER_NAME)
+    @CircuitBreaker(name = CIRCUIT_BREAKER_NAME, fallbackMethod = "getPostsFallback")
     public List<AuditionPost> getPosts(final PostSearchCriteria criteria) {
         final String url = buildPostsUrl(criteria);
         log.debug("Fetching posts from: {}", url);
-        try {
-            return Optional.ofNullable(restTemplate.getForObject(url, AuditionPost[].class))
+        return executeWithErrorHandling(
+            () -> Optional.ofNullable(restTemplate.getForObject(url, AuditionPost[].class))
                 .map(Arrays::asList)
-                .orElse(List.of());
-        } catch (final HttpServerErrorException | ResourceAccessException e) {
-            log.error("Transient error fetching posts: {}", e.getMessage());
-            throw e;
-        } catch (final HttpClientErrorException.TooManyRequests e) {
-            log.warn("Rate limited while fetching posts: {}", e.getMessage());
-            throw e;
-        } catch (final RestClientException e) {
-            log.error("Error fetching posts: {}", e.getMessage());
-            throw SystemException.internalError("Error fetching posts: " + e.getMessage(), e);
-        }
+                .orElse(List.of()),
+            "posts"
+        );
     }
 
-    @SuppressWarnings("unused")
-    List<AuditionPost> getPostsFallback(final PostSearchCriteria criteria, final Throwable t) {
-        log.warn("Circuit breaker fallback for getPosts: {}", t.getMessage());
-        if (t instanceof HttpClientErrorException.TooManyRequests) {
-            throw SystemException.rateLimitExceeded("Upstream API rate limit exceeded. Please try again later.", t);
-        }
-        throw SystemException.serviceUnavailable("Posts service is temporarily unavailable. Please try again later.", t);
-    }
-
-    @CircuitBreaker(name = "#{@auditionApiProperties.circuitBreakerName}", fallbackMethod = "getPostByIdFallback")
-    @Retry(name = "#{@auditionApiProperties.circuitBreakerName}")
+    @Retry(name = CIRCUIT_BREAKER_NAME)
+    @CircuitBreaker(name = CIRCUIT_BREAKER_NAME, fallbackMethod = "getPostByIdFallback")
     public AuditionPost getPostById(final Long id) {
         final String url = buildPostByIdUrl(id);
         log.debug("Fetching post by id from: {}", url);
-        try {
-            return Optional.ofNullable(restTemplate.getForObject(url, AuditionPost.class))
-                .orElseThrow(() -> SystemException.notFound("Cannot find a Post with id " + id));
-        } catch (final HttpClientErrorException e) {
-            log.error("Client error fetching post {}: {}", id, e.getMessage());
-            if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
-                throw SystemException.notFound("Cannot find a Post with id " + id, e);
-            }
-            if (e instanceof HttpClientErrorException.TooManyRequests) {
-                throw e;
-            }
-            throw SystemException.withCause(e.getMessage(), "API Error", e.getStatusCode().value(), e);
-        } catch (final HttpServerErrorException | ResourceAccessException e) {
-            log.error("Transient error fetching post {}: {}", id, e.getMessage());
-            throw e;
-        } catch (final RestClientException e) {
-            log.error("Error fetching post {}: {}", id, e.getMessage());
-            throw SystemException.internalError("Error fetching post: " + e.getMessage(), e);
-        }
+        return executeWithErrorHandling(
+            () -> Optional.ofNullable(restTemplate.getForObject(url, AuditionPost.class))
+                .orElseThrow(() -> SystemException.notFound("Cannot find a Post with id " + id)),
+            "Post with id " + id
+        );
     }
 
-    @SuppressWarnings("unused")
-    AuditionPost getPostByIdFallback(final Long id, final Throwable t) {
-        log.warn("Circuit breaker fallback for getPostById({}): {}", id, t.getMessage());
-        if (t instanceof HttpClientErrorException.TooManyRequests) {
-            throw SystemException.rateLimitExceeded("Upstream API rate limit exceeded. Please try again later.", t);
-        }
-        throw SystemException.serviceUnavailable("Post service is temporarily unavailable. Please try again later.", t);
-    }
-
-    @CircuitBreaker(name = "#{@auditionApiProperties.circuitBreakerName}", fallbackMethod = "getPostWithCommentsFallback")
-    @Retry(name = "#{@auditionApiProperties.circuitBreakerName}")
+    @Retry(name = CIRCUIT_BREAKER_NAME)
+    @CircuitBreaker(name = CIRCUIT_BREAKER_NAME, fallbackMethod = "getPostWithCommentsFallback")
     public AuditionPost getPostWithComments(final Long postId) {
         final String url = buildPostWithCommentsUrl(postId);
         log.debug("Fetching post with comments from: {}", url);
-        try {
-            return Optional.ofNullable(restTemplate.getForObject(url, AuditionPost.class))
-                .orElseThrow(() -> SystemException.notFound("Cannot find a Post with id " + postId));
-        } catch (final HttpClientErrorException e) {
-            log.error("Client error fetching post {} with comments: {}", postId, e.getMessage());
-            if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
-                throw SystemException.notFound("Cannot find a Post with id " + postId, e);
-            }
-            if (e instanceof HttpClientErrorException.TooManyRequests) {
-                throw e;
-            }
-            throw SystemException.withCause(e.getMessage(), "API Error", e.getStatusCode().value(), e);
-        } catch (final HttpServerErrorException | ResourceAccessException e) {
-            log.error("Transient error fetching post {} with comments: {}", postId, e.getMessage());
-            throw e;
-        } catch (final RestClientException e) {
-            log.error("Error fetching post {} with comments: {}", postId, e.getMessage());
-            throw SystemException.internalError("Error fetching post: " + e.getMessage(), e);
-        }
+        return executeWithErrorHandling(
+            () -> Optional.ofNullable(restTemplate.getForObject(url, AuditionPost.class))
+                .orElseThrow(() -> SystemException.notFound("Cannot find a Post with id " + postId)),
+            "Post with id " + postId
+        );
     }
 
-    @SuppressWarnings("unused")
-    AuditionPost getPostWithCommentsFallback(final Long postId, final Throwable t) {
-        log.warn("Circuit breaker fallback for getPostWithComments({}): {}", postId, t.getMessage());
-        if (t instanceof HttpClientErrorException.TooManyRequests) {
-            throw SystemException.rateLimitExceeded("Upstream API rate limit exceeded. Please try again later.", t);
-        }
-        throw SystemException.serviceUnavailable("Post service is temporarily unavailable. Please try again later.", t);
-    }
-
-    @CircuitBreaker(name = "#{@auditionApiProperties.circuitBreakerName}", fallbackMethod = "getCommentsForPostFallback")
-    @Retry(name = "#{@auditionApiProperties.circuitBreakerName}")
+    @Retry(name = CIRCUIT_BREAKER_NAME)
+    @CircuitBreaker(name = CIRCUIT_BREAKER_NAME, fallbackMethod = "getCommentsForPostFallback")
     public List<Comment> getCommentsForPost(final Long postId) {
         final String url = buildCommentsUrl(postId);
         log.debug("Fetching comments for post from: {}", url);
-        try {
-            return Optional.ofNullable(restTemplate.getForObject(url, Comment[].class))
+        return executeWithErrorHandling(
+            () -> Optional.ofNullable(restTemplate.getForObject(url, Comment[].class))
                 .map(Arrays::asList)
-                .orElse(List.of());
-        } catch (final HttpServerErrorException | ResourceAccessException e) {
-            log.error("Transient error fetching comments for post {}: {}", postId, e.getMessage());
-            throw e;
-        } catch (final HttpClientErrorException.TooManyRequests e) {
-            log.warn("Rate limited while fetching comments for post {}: {}", postId, e.getMessage());
-            throw e;
-        } catch (final RestClientException e) {
-            log.error("Error fetching comments for post {}: {}", postId, e.getMessage());
-            throw SystemException.internalError("Error fetching comments: " + e.getMessage(), e);
-        }
+                .orElse(List.of()),
+            "comments for post with id " + postId
+        );
     }
 
-    @SuppressWarnings("unused")
-    List<Comment> getCommentsForPostFallback(final Long postId, final Throwable t) {
-        log.warn("Circuit breaker fallback for getCommentsForPost({}): {}", postId, t.getMessage());
-        if (t instanceof HttpClientErrorException.TooManyRequests) {
-            throw SystemException.rateLimitExceeded("Upstream API rate limit exceeded. Please try again later.", t);
-        }
-        throw SystemException.serviceUnavailable("Comments service is temporarily unavailable. Please try again later.", t);
-    }
+    // ========== URL Builders ==========
 
     private String buildPostsUrl(final PostSearchCriteria criteria) {
         final UriComponentsBuilder builder = UriComponentsBuilder
@@ -218,5 +144,75 @@ public class AuditionIntegrationClient {
             .path(apiProperties.getCommentsPath())
             .buildAndExpand(postId)
             .toUriString();
+    }
+
+    // ========== Error Handling ==========
+
+    private <T> T executeWithErrorHandling(final Supplier<T> operation, final String resource) {
+        try {
+            return operation.get();
+        } catch (final HttpClientErrorException e) {
+            log.error("Client error fetching {}: {}", resource, e.getMessage());
+            throw handleClientError(e, resource);
+        } catch (final HttpServerErrorException e) {
+            log.error("Server error fetching {}: {}", resource, e.getMessage());
+            throw e;
+        } catch (final ResourceAccessException e) {
+            log.error("Connection error fetching {}: {}", resource, e.getMessage());
+            throw e;
+        } catch (final RestClientException e) {
+            log.error("Unexpected error fetching {}: {}", resource, e.getMessage(), e);
+            throw handleGenericError(e);
+        }
+    }
+
+    private RuntimeException handleClientError(final HttpClientErrorException e, final String resource) {
+        if (e.getStatusCode() == HttpStatus.TOO_MANY_REQUESTS) {
+            log.warn("Rate limited, will retry: {}", e.getMessage());
+            throw e;
+        }
+        final int statusValue = e.getStatusCode().value();
+        return switch (statusValue) {
+            case 404 -> SystemException.notFound("Cannot find " + resource, e);
+            default -> SystemException.withCause(e.getMessage(), "API Error", statusValue, e);
+        };
+    }
+
+    private SystemException handleGenericError(final RestClientException e) {
+        return SystemException.internalError(
+            "An unexpected error occurred while communicating with the API.", e);
+    }
+
+    // ========== Fallback Methods (invoked via reflection by Resilience4j @CircuitBreaker) ==========
+
+    private List<AuditionPost> getPostsFallback(final PostSearchCriteria criteria, final Throwable t) {
+        return handleFallback("getPosts", t);
+    }
+
+    private AuditionPost getPostByIdFallback(final Long id, final Throwable t) {
+        return handleFallback("getPostById " + id, t);
+    }
+
+    private AuditionPost getPostWithCommentsFallback(final Long postId, final Throwable t) {
+        return handleFallback("getPostWithComments " + postId, t);
+    }
+
+    private List<Comment> getCommentsForPostFallback(final Long postId, final Throwable t) {
+        return handleFallback("getCommentsForPost " + postId, t);
+    }
+
+    private <T> T handleFallback(final String methodName, final Throwable t) {
+        log.warn("Circuit breaker fallback for {}: {}", methodName, t.getMessage());
+        throw createFallbackException(t);
+    }
+
+    private SystemException createFallbackException(final Throwable cause) {
+        if (cause instanceof SystemException systemException) {
+            throw systemException;
+        }
+        if (cause instanceof HttpClientErrorException.TooManyRequests) {
+            return SystemException.rateLimitExceeded("API rate limit exceeded. Please try again later.", cause);
+        }
+        return SystemException.serviceUnavailable(SERVICE_UNAVAILABLE_MESSAGE, cause);
     }
 }
