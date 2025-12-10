@@ -21,7 +21,7 @@ pmd {
     consoleOutput = true
     toolVersion = "6.45.0"
     rulesMinimumPriority = 5
-
+    ruleSets = []
     ignoreFailures = false
     ruleSetFiles = files("$rootProject.projectDir/config/pmd/ruleset.xml")
 }
