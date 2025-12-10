@@ -41,7 +41,7 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">0.010s</div>
+<div class="counter">0.011s</div>
 <p>duration</p>
 </div>
 </td>
@@ -81,13 +81,13 @@
 <tr>
 <td class="success">Should handle SystemException with 2xx status</td>
 <td class="success">shouldHandleSystemExceptionWith2xxStatus()</td>
-<td class="success">0s</td>
+<td class="success">0.001s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Should handle SystemException with 3xx status</td>
 <td class="success">shouldHandleSystemExceptionWith3xxStatus()</td>
-<td class="success">0s</td>
+<td class="success">0.001s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -99,25 +99,25 @@
 <tr>
 <td class="success">Should handle SystemException with 4xx status</td>
 <td class="success">shouldHandleSystemExceptionWith4xxStatus()</td>
-<td class="success">0.002s</td>
+<td class="success">0.001s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Should handle SystemException with 503 status</td>
 <td class="success">shouldHandleSystemExceptionWith503Status()</td>
-<td class="success">0.003s</td>
+<td class="success">0.001s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Should handle SystemException with 5xx status</td>
 <td class="success">shouldHandleSystemExceptionWith5xxStatus()</td>
-<td class="success">0.001s</td>
+<td class="success">0.002s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Should handle SystemException with invalid status code and fallback to 500</td>
 <td class="success">shouldHandleSystemExceptionWithInvalidStatusCode()</td>
-<td class="success">0.001s</td>
+<td class="success">0.002s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -137,10 +137,10 @@
 <div id="tab1" class="tab">
 <h2>Standard output</h2>
 <span class="code">
-<pre>2025-12-10 05:20:41.003  WARN 2267 --- [    Test worker] c.a.w.advice.ExceptionControllerAdvice   : Client error [Rate Limit Exceeded]: Rate limit exceeded
-2025-12-10 05:20:41.005  WARN 2267 --- [    Test worker] c.a.w.advice.ExceptionControllerAdvice   : Client error [Resource Not Found]: Not found
-2025-12-10 05:20:41.006  INFO 2267 --- [    Test worker] c.a.w.advice.ExceptionControllerAdvice   : System exception [Redirect]: Redirect
-2025-12-10 05:20:41.008 ERROR 2267 --- [    Test worker] c.a.w.advice.ExceptionControllerAdvice   : System exception occurred [Internal Server Error]: Server error
+<pre>2025-12-10 05:24:26.542  WARN 2502 --- [    Test worker] c.a.w.advice.ExceptionControllerAdvice   : Client error [Rate Limit Exceeded]: Rate limit exceeded
+2025-12-10 05:24:26.544  WARN 2502 --- [    Test worker] c.a.w.advice.ExceptionControllerAdvice   : Client error [Resource Not Found]: Not found
+2025-12-10 05:24:26.545  INFO 2502 --- [    Test worker] c.a.w.advice.ExceptionControllerAdvice   : System exception [Redirect]: Redirect
+2025-12-10 05:24:26.547 ERROR 2502 --- [    Test worker] c.a.w.advice.ExceptionControllerAdvice   : System exception occurred [Internal Server Error]: Server error
 
 com.audition.common.exception.SystemException: Server error
 	at com.audition.common.exception.SystemException.internalError(SystemException.java:113)
@@ -241,8 +241,8 @@ com.audition.common.exception.SystemException: Server error
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
 
-2025-12-10 05:20:41.010  INFO 2267 --- [    Test worker] c.a.w.advice.ExceptionControllerAdvice   : Error Code from Exception could not be mapped to a valid HttpStatus Code - -1
-2025-12-10 05:20:41.010 ERROR 2267 --- [    Test worker] c.a.w.advice.ExceptionControllerAdvice   : System exception occurred [Invalid Status]: Error
+2025-12-10 05:24:26.548  INFO 2502 --- [    Test worker] c.a.w.advice.ExceptionControllerAdvice   : Error Code from Exception could not be mapped to a valid HttpStatus Code - -1
+2025-12-10 05:24:26.548 ERROR 2502 --- [    Test worker] c.a.w.advice.ExceptionControllerAdvice   : System exception occurred [Invalid Status]: Error
 
 com.audition.common.exception.SystemException: Error
 	at com.audition.common.exception.SystemException.withTitleAndStatus(SystemException.java:47)
@@ -343,10 +343,10 @@ com.audition.common.exception.SystemException: Error
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
 
-2025-12-10 05:20:41.012  INFO 2267 --- [    Test worker] c.a.w.advice.ExceptionControllerAdvice   : System exception [Success]: OK
-2025-12-10 05:20:41.012  WARN 2267 --- [    Test worker] c.a.w.advice.ExceptionControllerAdvice   : Client error [Bad Request]: Bad request
-2025-12-10 05:20:41.013  WARN 2267 --- [    Test worker] c.a.w.advice.ExceptionControllerAdvice   : Client error [Resource Not Found]: Not found
-2025-12-10 05:20:41.015 ERROR 2267 --- [    Test worker] c.a.w.advice.ExceptionControllerAdvice   : System exception occurred [Service Unavailable]: Service unavailable
+2025-12-10 05:24:26.550  INFO 2502 --- [    Test worker] c.a.w.advice.ExceptionControllerAdvice   : System exception [Success]: OK
+2025-12-10 05:24:26.551  WARN 2502 --- [    Test worker] c.a.w.advice.ExceptionControllerAdvice   : Client error [Bad Request]: Bad request
+2025-12-10 05:24:26.552  WARN 2502 --- [    Test worker] c.a.w.advice.ExceptionControllerAdvice   : Client error [Resource Not Found]: Not found
+2025-12-10 05:24:26.553 ERROR 2502 --- [    Test worker] c.a.w.advice.ExceptionControllerAdvice   : System exception occurred [Service Unavailable]: Service unavailable
 
 com.audition.common.exception.SystemException: Service unavailable
 	at com.audition.common.exception.SystemException.serviceUnavailable(SystemException.java:99)
@@ -458,7 +458,7 @@ com.audition.common.exception.SystemException: Service unavailable
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="http://www.gradle.org">Gradle 7.6</a> at Dec 10, 2025, 5:20:41 AM</p>
+<a href="http://www.gradle.org">Gradle 7.6</a> at Dec 10, 2025, 5:24:26 AM</p>
 </div>
 </div>
 </body>

@@ -36,8 +36,8 @@
           }
         ],
         "responses": {
-          "503": {
-            "description": "Upstream service unavailable",
+          "400": {
+            "description": "Invalid request parameters",
             "content": {
               "application/json": {
                 "schema": {
@@ -59,8 +59,8 @@
               }
             }
           },
-          "400": {
-            "description": "Invalid request parameters",
+          "503": {
+            "description": "Upstream service unavailable",
             "content": {
               "application/json": {
                 "schema": {
@@ -94,16 +94,6 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "Invalid post ID (must be positive number)",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetail"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Successfully retrieved comments",
             "content": {
@@ -119,6 +109,16 @@
           },
           "503": {
             "description": "Upstream service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid post ID (must be positive number)",
             "content": {
               "application/json": {
                 "schema": {
@@ -162,16 +162,6 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "Invalid post ID (must be positive number)",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetail"
-                }
-              }
-            }
-          },
           "503": {
             "description": "Upstream service unavailable",
             "content": {
@@ -182,8 +172,8 @@
               }
             }
           },
-          "404": {
-            "description": "Post not found",
+          "400": {
+            "description": "Invalid post ID (must be positive number)",
             "content": {
               "application/json": {
                 "schema": {
@@ -198,6 +188,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AuditionPost"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Post not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
                 }
               }
             }

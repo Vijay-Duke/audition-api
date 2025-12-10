@@ -41,7 +41,7 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">0.037s</div>
+<div class="counter">0.021s</div>
 <p>duration</p>
 </div>
 </td>
@@ -81,55 +81,55 @@
 <tr>
 <td class="success">Should handle 400 Bad Request</td>
 <td class="success">shouldHandle400BadRequest()</td>
-<td class="success">0.009s</td>
+<td class="success">0.006s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Should handle 401 Unauthorized</td>
 <td class="success">shouldHandle401Unauthorized()</td>
-<td class="success">0.004s</td>
+<td class="success">0.002s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Should handle 403 Forbidden</td>
 <td class="success">shouldHandle403Forbidden()</td>
-<td class="success">0.004s</td>
+<td class="success">0.002s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Should handle 404 in getCommentsForPost</td>
 <td class="success">shouldHandle404InGetCommentsForPost()</td>
-<td class="success">0.004s</td>
+<td class="success">0.002s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Should handle 404 in getPostWithComments</td>
 <td class="success">shouldHandle404InGetPostWithComments()</td>
-<td class="success">0.003s</td>
+<td class="success">0.002s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Should rethrow 500 Internal Server Error for retry</td>
 <td class="success">shouldRethrow500ForRetry()</td>
-<td class="success">0.004s</td>
+<td class="success">0.002s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Should rethrow 502 Bad Gateway for retry</td>
 <td class="success">shouldRethrow502ForRetry()</td>
-<td class="success">0.003s</td>
+<td class="success">0.002s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Should rethrow 503 Service Unavailable for retry</td>
 <td class="success">shouldRethrow503ForRetry()</td>
-<td class="success">0.003s</td>
+<td class="success">0.001s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Should rethrow 504 Gateway Timeout for retry</td>
 <td class="success">shouldRethrow504ForRetry()</td>
-<td class="success">0.003s</td>
+<td class="success">0.002s</td>
 <td class="success">passed</td>
 </tr>
 </table>
@@ -137,15 +137,15 @@
 <div id="tab1" class="tab">
 <h2>Standard output</h2>
 <span class="code">
-<pre>2025-12-10 05:20:40.353 ERROR 2267 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Client error fetching posts: 400 Bad Request
-2025-12-10 05:20:40.362 ERROR 2267 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Client error fetching posts: 403 FORBIDDEN
-2025-12-10 05:20:40.367 ERROR 2267 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Client error fetching posts: 401 UNAUTHORIZED
-2025-12-10 05:20:40.371 ERROR 2267 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Server error fetching Post with id 1: 503 SERVICE_UNAVAILABLE
-2025-12-10 05:20:40.375 ERROR 2267 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Server error fetching posts: 500 INTERNAL_SERVER_ERROR
-2025-12-10 05:20:40.379 ERROR 2267 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Client error fetching comments for post with id 999: 404 NOT_FOUND
-2025-12-10 05:20:40.384 ERROR 2267 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Server error fetching Post with id 1: 502 BAD_GATEWAY
-2025-12-10 05:20:40.388 ERROR 2267 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Server error fetching comments for post with id 1: 504 GATEWAY_TIMEOUT
-2025-12-10 05:20:40.392 ERROR 2267 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Client error fetching Post with id 999: 404 NOT_FOUND
+<pre>2025-12-10 05:24:26.174 ERROR 2502 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Client error fetching posts: 400 Bad Request
+2025-12-10 05:24:26.181 ERROR 2502 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Client error fetching posts: 403 FORBIDDEN
+2025-12-10 05:24:26.184 ERROR 2502 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Client error fetching posts: 401 UNAUTHORIZED
+2025-12-10 05:24:26.186 ERROR 2502 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Server error fetching Post with id 1: 503 SERVICE_UNAVAILABLE
+2025-12-10 05:24:26.188 ERROR 2502 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Server error fetching posts: 500 INTERNAL_SERVER_ERROR
+2025-12-10 05:24:26.191 ERROR 2502 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Client error fetching comments for post with id 999: 404 NOT_FOUND
+2025-12-10 05:24:26.194 ERROR 2502 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Server error fetching Post with id 1: 502 BAD_GATEWAY
+2025-12-10 05:24:26.196 ERROR 2502 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Server error fetching comments for post with id 1: 504 GATEWAY_TIMEOUT
+2025-12-10 05:24:26.199 ERROR 2502 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Client error fetching Post with id 999: 404 NOT_FOUND
 </pre>
 </span>
 </div>
@@ -157,7 +157,7 @@
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="http://www.gradle.org">Gradle 7.6</a> at Dec 10, 2025, 5:20:41 AM</p>
+<a href="http://www.gradle.org">Gradle 7.6</a> at Dec 10, 2025, 5:24:26 AM</p>
 </div>
 </div>
 </body>
