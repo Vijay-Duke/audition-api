@@ -1,6 +1,10 @@
 # Audition API
 
-![Build Status](https://github.com/Vijay-Duke/audition-api/actions/workflows/ci.yml/badge.svg)
+[![Build](https://github.com/Vijay-Duke/audition-api/actions/workflows/ci.yml/badge.svg)](https://github.com/Vijay-Duke/audition-api/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/Vijay-Duke/audition-api/actions/workflows/codeql.yml/badge.svg)](https://github.com/Vijay-Duke/audition-api/actions/workflows/codeql.yml)
+[![Java](https://img.shields.io/badge/Java-17-orange.svg)](https://openjdk.org/projects/jdk/17/)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.0.3-brightgreen.svg)](https://spring.io/projects/spring-boot)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
 
 ## Reports
 - [API Documentation](https://vijay-duke.github.io/audition-api/reports/openapi/index.html)
