@@ -131,7 +131,7 @@ All endpoints are versioned under `/api/v1/`:
 | `userId` | Integer | Filter posts by user ID |
 | `titleContains` | String | Filter posts where title contains this text |
 | `page` | Integer | Page number (1-indexed, requires `size`) |
-| `size` | Integer | Page size (requires `page`) |
+| `size` | Integer | Page size, max 100 (requires `page`) |
 | `sort` | String | Sort field: `id`, `userId`, or `title` |
 | `order` | String | Sort order: `asc` or `desc` |
 
