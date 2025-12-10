@@ -79,6 +79,9 @@ dependencyManagement {
     }
 }
 
+springBoot {
+    buildInfo()
+}
 
 task prepareGitHooks(type: Copy) {
     from "$projectDir/git-hooks"

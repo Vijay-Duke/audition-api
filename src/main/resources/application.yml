@@ -27,6 +27,18 @@ management:
   endpoint:
     health:
       show-details: when-authorized
+  info:
+    env:
+      enabled: true
+    build:
+      enabled: true
+    java:
+      enabled: true
+
+info:
+  app:
+    name: ${spring.application.name}
+    description: REST API for posts and comments
 
 logging:
   pattern:
