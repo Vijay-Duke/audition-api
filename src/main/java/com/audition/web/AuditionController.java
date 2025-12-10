@@ -1,40 +1,38 @@
 package com.audition.web;
 
 import com.audition.model.AuditionPost;
+import com.audition.model.Comment;
 import com.audition.service.AuditionService;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class AuditionController {
 
-    @Autowired
-    AuditionService auditionService;
+    private final AuditionService auditionService;
 
-    // TODO Add a query param that allows data filtering. The intent of the filter is at developers discretion.
-    @RequestMapping(value = "/posts", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody List<AuditionPost> getPosts() {
+    public AuditionController(final AuditionService auditionService) {
+        this.auditionService = auditionService;
+    }
 
-        // TODO Add logic that filters response data based on the query param
-
+    @GetMapping(value = "/posts", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<AuditionPost> getPosts() {
         return auditionService.getPosts();
     }
 
-    @RequestMapping(value = "/posts/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody AuditionPost getPosts(@PathVariable("id") final String postId) {
-        final AuditionPost auditionPosts = auditionService.getPostById(postId);
-
-        // TODO Add input validation
-
-        return auditionPosts;
+    @GetMapping(value = "/posts/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public AuditionPost getPostById(
+            @PathVariable("id") final Long postId,
+            @RequestParam(value = "embed", defaultValue = "false") final boolean includeComments) {
+        return auditionService.getPostById(postId, includeComments);
     }
 
-    // TODO Add additional methods to return comments for each post. Hint: Check https://jsonplaceholder.typicode.com/
-
+    @GetMapping(value = "/posts/{postId}/comments", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Comment> getCommentsForPost(@PathVariable("postId") final Long postId) {
+        return auditionService.getCommentsForPost(postId);
+    }
 }

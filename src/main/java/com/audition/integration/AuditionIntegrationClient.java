@@ -1,45 +1,132 @@
 package com.audition.integration;
 
 import com.audition.common.exception.SystemException;
+import com.audition.configuration.AuditionApiProperties;
 import com.audition.model.AuditionPost;
-import java.util.ArrayList;
+import com.audition.model.Comment;
+import java.util.Arrays;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Optional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
+/**
+ * Integration client for the JSONPlaceholder API.
+ * Provides methods to fetch posts and comments.
+ */
+@Slf4j
 @Component
 public class AuditionIntegrationClient {
 
+    private final RestTemplate restTemplate;
+    private final AuditionApiProperties apiProperties;
 
-    @Autowired
-    private RestTemplate restTemplate;
-
-    public List<AuditionPost> getPosts() {
-        // TODO make RestTemplate call to get Posts from https://jsonplaceholder.typicode.com/posts
-
-        return new ArrayList<>();
+    public AuditionIntegrationClient(final RestTemplate restTemplate,
+                                     final AuditionApiProperties apiProperties) {
+        this.restTemplate = restTemplate;
+        this.apiProperties = apiProperties;
     }
 
-    public AuditionPost getPostById(final String id) {
-        // TODO get post by post ID call from https://jsonplaceholder.typicode.com/posts/
+    public List<AuditionPost> getPosts() {
+        final String url = buildPostsUrl();
+        log.debug("Fetching posts from: {}", url);
         try {
-            return new AuditionPost();
-        } catch (final HttpClientErrorException e) {
-            if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
-                throw new SystemException("Cannot find a Post with id " + id, "Resource Not Found",
-                    404);
-            } else {
-                // TODO Find a better way to handle the exception so that the original error message is not lost. Feel free to change this function.
-                throw new SystemException("Unknown Error message");
-            }
+            return Optional.ofNullable(restTemplate.getForObject(url, AuditionPost[].class))
+                .map(Arrays::asList)
+                .orElse(List.of());
+        } catch (final RestClientException e) {
+            log.error("Error fetching posts: {}", e.getMessage());
+            throw new SystemException("Error fetching posts: " + e.getMessage(), 500);
         }
     }
 
-    // TODO Write a method GET comments for a post from https://jsonplaceholder.typicode.com/posts/{postId}/comments - the comments must be returned as part of the post.
+    public AuditionPost getPostById(final Long id) {
+        final String url = buildPostByIdUrl(id);
+        log.debug("Fetching post by id from: {}", url);
+        try {
+            return Optional.ofNullable(restTemplate.getForObject(url, AuditionPost.class))
+                .orElseThrow(() -> new SystemException("Cannot find a Post with id " + id, "Resource Not Found", 404));
+        } catch (final HttpClientErrorException e) {
+            log.error("Client error fetching post {}: {}", id, e.getMessage());
+            if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
+                throw new SystemException("Cannot find a Post with id " + id, "Resource Not Found", 404);
+            }
+            throw new SystemException(e.getMessage(), "API Error", e.getStatusCode().value());
+        } catch (final RestClientException e) {
+            log.error("Error fetching post {}: {}", id, e.getMessage());
+            throw new SystemException("Error fetching post: " + e.getMessage(), 500);
+        }
+    }
 
-    // TODO write a method. GET comments for a particular Post from https://jsonplaceholder.typicode.com/comments?postId={postId}.
-    // The comments are a separate list that needs to be returned to the API consumers. Hint: this is not part of the AuditionPost pojo.
+    public AuditionPost getPostWithComments(final Long postId) {
+        final String url = buildPostWithCommentsUrl(postId);
+        log.debug("Fetching post with comments from: {}", url);
+        try {
+            return Optional.ofNullable(restTemplate.getForObject(url, AuditionPost.class))
+                .orElseThrow(() -> new SystemException("Cannot find a Post with id " + postId, "Resource Not Found", 404));
+        } catch (final HttpClientErrorException e) {
+            log.error("Client error fetching post {} with comments: {}", postId, e.getMessage());
+            if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
+                throw new SystemException("Cannot find a Post with id " + postId, "Resource Not Found", 404);
+            }
+            throw new SystemException(e.getMessage(), "API Error", e.getStatusCode().value());
+        } catch (final RestClientException e) {
+            log.error("Error fetching post {} with comments: {}", postId, e.getMessage());
+            throw new SystemException("Error fetching post: " + e.getMessage(), 500);
+        }
+    }
+
+    public List<Comment> getCommentsForPost(final Long postId) {
+        final String url = buildCommentsUrl(postId);
+        log.debug("Fetching comments for post from: {}", url);
+        try {
+            return Optional.ofNullable(restTemplate.getForObject(url, Comment[].class))
+                .map(Arrays::asList)
+                .orElse(List.of());
+        } catch (final RestClientException e) {
+            log.error("Error fetching comments for post {}: {}", postId, e.getMessage());
+            throw new SystemException("Error fetching comments: " + e.getMessage(), 500);
+        }
+    }
+
+    private String buildPostsUrl() {
+        return UriComponentsBuilder
+            .fromUriString(apiProperties.getBaseUrl())
+            .path(apiProperties.getPostsPath())
+            .toUriString();
+    }
+
+    private String buildPostByIdUrl(final Long id) {
+        return UriComponentsBuilder
+            .fromUriString(apiProperties.getBaseUrl())
+            .path(apiProperties.getPostsPath())
+            .path("/{id}")
+            .buildAndExpand(id)
+            .toUriString();
+    }
+
+    private String buildPostWithCommentsUrl(final Long postId) {
+        return UriComponentsBuilder
+            .fromUriString(apiProperties.getBaseUrl())
+            .path(apiProperties.getPostsPath())
+            .path("/{id}")
+            .queryParam("_embed", "comments")
+            .buildAndExpand(postId)
+            .toUriString();
+    }
+
+    private String buildCommentsUrl(final Long postId) {
+        return UriComponentsBuilder
+            .fromUriString(apiProperties.getBaseUrl())
+            .path(apiProperties.getPostsPath())
+            .path("/{postId}")
+            .path(apiProperties.getCommentsPath())
+            .buildAndExpand(postId)
+            .toUriString();
+    }
 }
