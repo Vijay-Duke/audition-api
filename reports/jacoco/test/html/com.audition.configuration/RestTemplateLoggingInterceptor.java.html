@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.client.ClientHttpRequestExecution;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
@@ -14,65 +15,69 @@ import org.springframework.util.StreamUtils;
  * Logging interceptor for RestTemplate that logs HTTP request/response details.
  * Logs request method, URI, headers, and response status/body at DEBUG level.
  */
-<span class="fc" id="L17">public class RestTemplateLoggingInterceptor implements ClientHttpRequestInterceptor {</span>
+<span class="fc" id="L18">public class RestTemplateLoggingInterceptor implements ClientHttpRequestInterceptor {</span>
 
-<span class="fc" id="L19">    private static final Logger LOG = LoggerFactory.getLogger(RestTemplateLoggingInterceptor.class);</span>
+<span class="fc" id="L20">    private static final Logger LOG = LoggerFactory.getLogger(RestTemplateLoggingInterceptor.class);</span>
     private static final int MAX_BODY_LOG_LENGTH = 1000;
 
     @Override
     public ClientHttpResponse intercept(final HttpRequest request,
                                         final byte[] body,
                                         final ClientHttpRequestExecution execution) throws IOException {
-<span class="fc" id="L26">        logRequest(request, body);</span>
-<span class="fc" id="L27">        final long startTime = System.currentTimeMillis();</span>
+<span class="fc" id="L27">        logRequest(request, body);</span>
+<span class="fc" id="L28">        final long startTime = System.currentTimeMillis();</span>
 
-<span class="fc" id="L29">        final ClientHttpResponse response = execution.execute(request, body);</span>
+<span class="fc" id="L30">        final ClientHttpResponse response = execution.execute(request, body);</span>
 
-<span class="fc" id="L31">        final long duration = System.currentTimeMillis() - startTime;</span>
-<span class="fc" id="L32">        logResponse(request, response, duration);</span>
+<span class="fc" id="L32">        final long duration = System.currentTimeMillis() - startTime;</span>
+<span class="fc" id="L33">        logResponse(request, response, duration);</span>
 
-<span class="fc" id="L34">        return response;</span>
+<span class="fc" id="L35">        return response;</span>
     }
 
     private void logRequest(final HttpRequest request, final byte[] body) {
-<span class="pc bpc" id="L38" title="1 of 2 branches missed.">        if (LOG.isDebugEnabled()) {</span>
-<span class="nc" id="L39">            LOG.debug(&quot;==&gt; Request: {} {}&quot;, request.getMethod(), request.getURI());</span>
-<span class="nc" id="L40">            LOG.debug(&quot;==&gt; Headers: {}&quot;, request.getHeaders());</span>
-<span class="nc bnc" id="L41" title="All 4 branches missed.">            if (body != null &amp;&amp; body.length &gt; 0) {</span>
-<span class="nc" id="L42">                final String bodyStr = new String(body, StandardCharsets.UTF_8);</span>
-<span class="nc" id="L43">                LOG.debug(&quot;==&gt; Body: {}&quot;, truncateIfNeeded(bodyStr));</span>
+<span class="pc bpc" id="L39" title="1 of 2 branches missed.">        if (LOG.isDebugEnabled()) {</span>
+<span class="nc" id="L40">            LOG.debug(&quot;==&gt; Request: {} {}&quot;, request.getMethod(), request.getURI());</span>
+<span class="nc" id="L41">            LOG.debug(&quot;==&gt; Headers:\n{}&quot;, formatHeaders(request.getHeaders()));</span>
+<span class="nc bnc" id="L42" title="All 4 branches missed.">            if (body != null &amp;&amp; body.length &gt; 0) {</span>
+<span class="nc" id="L43">                final String bodyStr = new String(body, StandardCharsets.UTF_8);</span>
+<span class="nc" id="L44">                LOG.debug(&quot;==&gt; Body: {}&quot;, truncateIfNeeded(bodyStr));</span>
             }
         }
-<span class="fc" id="L46">    }</span>
+<span class="fc" id="L47">    }</span>
 
     private void logResponse(final HttpRequest request,
                              final ClientHttpResponse response,
                              final long durationMs) throws IOException {
-<span class="pc bpc" id="L51" title="1 of 2 branches missed.">        if (LOG.isDebugEnabled()) {</span>
-<span class="nc" id="L52">            LOG.debug(&quot;&lt;== Response: {} {} - Status: {} ({}ms)&quot;,</span>
-<span class="nc" id="L53">                request.getMethod(),</span>
-<span class="nc" id="L54">                request.getURI(),</span>
-<span class="nc" id="L55">                response.getStatusCode(),</span>
-<span class="nc" id="L56">                durationMs);</span>
-<span class="nc" id="L57">            LOG.debug(&quot;&lt;== Headers: {}&quot;, response.getHeaders());</span>
-
-            // Only log body for non-successful responses or when trace is enabled
-<span class="nc bnc" id="L60" title="All 2 branches missed.">            if (LOG.isTraceEnabled()) {</span>
-<span class="nc" id="L61">                final byte[] bodyBytes = StreamUtils.copyToByteArray(response.getBody());</span>
-<span class="nc" id="L62">                final String bodyStr = new String(bodyBytes, StandardCharsets.UTF_8);</span>
-<span class="nc" id="L63">                LOG.trace(&quot;&lt;== Body: {}&quot;, truncateIfNeeded(bodyStr));</span>
-            }
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">        if (LOG.isDebugEnabled()) {</span>
+<span class="nc" id="L53">            LOG.debug(&quot;&lt;== Response: {} {} - Status: {} ({}ms)&quot;,</span>
+<span class="nc" id="L54">                request.getMethod(),</span>
+<span class="nc" id="L55">                request.getURI(),</span>
+<span class="nc" id="L56">                response.getStatusCode(),</span>
+<span class="nc" id="L57">                durationMs);</span>
+<span class="nc" id="L58">            LOG.debug(&quot;&lt;== Headers:\n{}&quot;, formatHeaders(response.getHeaders()));</span>
+<span class="nc" id="L59">            final byte[] bodyBytes = StreamUtils.copyToByteArray(response.getBody());</span>
+<span class="nc" id="L60">            final String bodyStr = new String(bodyBytes, StandardCharsets.UTF_8);</span>
+<span class="nc" id="L61">            LOG.debug(&quot;&lt;== Body: {}&quot;, truncateIfNeeded(bodyStr));</span>
         }
-<span class="fc" id="L66">    }</span>
+<span class="fc" id="L63">    }</span>
+
+    private String formatHeaders(final HttpHeaders headers) {
+<span class="nc" id="L66">        final StringBuilder sb = new StringBuilder();</span>
+<span class="nc" id="L67">        headers.forEach((name, values) -&gt;</span>
+<span class="nc" id="L68">            values.forEach(value -&gt; sb.append(&quot;      &quot;).append(name).append(&quot;: &quot;).append(value).append('\n'))</span>
+        );
+<span class="nc" id="L70">        return sb.toString().stripTrailing();</span>
+    }
 
     private String truncateIfNeeded(final String text) {
-<span class="nc bnc" id="L69" title="All 2 branches missed.">        if (text == null) {</span>
-<span class="nc" id="L70">            return &quot;&quot;;</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        if (text == null) {</span>
+<span class="nc" id="L75">            return &quot;&quot;;</span>
         }
-<span class="nc bnc" id="L72" title="All 2 branches missed.">        if (text.length() &lt;= MAX_BODY_LOG_LENGTH) {</span>
-<span class="nc" id="L73">            return text;</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        if (text.length() &lt;= MAX_BODY_LOG_LENGTH) {</span>
+<span class="nc" id="L78">            return text;</span>
         }
-<span class="nc" id="L75">        return text.substring(0, MAX_BODY_LOG_LENGTH) + &quot;...[truncated]&quot;;</span>
+<span class="nc" id="L80">        return text.substring(0, MAX_BODY_LOG_LENGTH) + &quot;...[truncated]&quot;;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -6,17 +6,17 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
-<span class="pc bpc" id="L9" title="17 of 32 branches missed.">@Value</span>
+<span class="pc bpc" id="L9" title="25 of 44 branches missed.">@Value</span>
 <span class="pc" id="L10">@Builder</span>
 @Jacksonized
 @Schema(description = &quot;A post from the audition API&quot;)
 public class AuditionPost {
 
     @Schema(description = &quot;ID of the user who created the post&quot;, example = &quot;1&quot;)
-<span class="fc" id="L16">    int userId;</span>
+<span class="fc" id="L16">    Long userId;</span>
 
     @Schema(description = &quot;Unique identifier of the post&quot;, example = &quot;1&quot;)
-<span class="fc" id="L19">    int id;</span>
+<span class="fc" id="L19">    Long id;</span>
 
     @Schema(description = &quot;Title of the post&quot;, example = &quot;sunt aut facere repellat provident&quot;)
 <span class="fc" id="L22">    String title;</span>

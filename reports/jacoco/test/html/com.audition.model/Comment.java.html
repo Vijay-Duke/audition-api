@@ -5,17 +5,17 @@ import lombok.Builder;
 import lombok.Value;
 import lombok.extern.jackson.Jacksonized;
 
-<span class="pc bpc" id="L8" title="17 of 32 branches missed.">@Value</span>
+<span class="pc bpc" id="L8" title="25 of 44 branches missed.">@Value</span>
 <span class="pc" id="L9">@Builder</span>
 @Jacksonized
 @Schema(description = &quot;A comment on a post&quot;)
 public class Comment {
 
     @Schema(description = &quot;ID of the post this comment belongs to&quot;, example = &quot;1&quot;)
-<span class="fc" id="L15">    int postId;</span>
+<span class="fc" id="L15">    Long postId;</span>
 
     @Schema(description = &quot;Unique identifier of the comment&quot;, example = &quot;1&quot;)
-<span class="fc" id="L18">    int id;</span>
+<span class="fc" id="L18">    Long id;</span>
 
     @Schema(description = &quot;Name/title of the comment&quot;, example = &quot;id labore ex et quam laborum&quot;)
 <span class="fc" id="L21">    String name;</span>

@@ -36,16 +36,6 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "Invalid request parameters",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetail"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Successfully retrieved posts",
             "content": {
@@ -61,6 +51,16 @@
           },
           "503": {
             "description": "Upstream service unavailable",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request parameters",
             "content": {
               "application/json": {
                 "schema": {
@@ -94,6 +94,16 @@
           }
         ],
         "responses": {
+          "400": {
+            "description": "Invalid post ID (must be positive number)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          },
           "200": {
             "description": "Successfully retrieved comments",
             "content": {
@@ -109,16 +119,6 @@
           },
           "503": {
             "description": "Upstream service unavailable",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetail"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid post ID (must be positive integer)",
             "content": {
               "application/json": {
                 "schema": {
@@ -162,18 +162,8 @@
           }
         ],
         "responses": {
-          "503": {
-            "description": "Upstream service unavailable",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetail"
-                }
-              }
-            }
-          },
           "400": {
-            "description": "Invalid post ID (must be positive integer)",
+            "description": "Invalid post ID (must be positive number)",
             "content": {
               "application/json": {
                 "schema": {
@@ -184,6 +174,16 @@
           },
           "404": {
             "description": "Post not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Upstream service unavailable",
             "content": {
               "application/json": {
                 "schema": {
@@ -297,13 +297,13 @@
           "userId": {
             "type": "integer",
             "description": "ID of the user who created the post",
-            "format": "int32",
+            "format": "int64",
             "example": 1
           },
           "id": {
             "type": "integer",
             "description": "Unique identifier of the post",
-            "format": "int32",
+            "format": "int64",
             "example": 1
           },
           "title": {
@@ -332,13 +332,13 @@
           "postId": {
             "type": "integer",
             "description": "ID of the post this comment belongs to",
-            "format": "int32",
+            "format": "int64",
             "example": 1
           },
           "id": {
             "type": "integer",
             "description": "Unique identifier of the comment",
-            "format": "int32",
+            "format": "int64",
             "example": 1
           },
           "name": {
