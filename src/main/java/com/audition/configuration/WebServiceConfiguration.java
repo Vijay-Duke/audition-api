@@ -1,42 +1,56 @@
 package com.audition.configuration;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.client.BufferingClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-
 @Configuration
+@EnableConfigurationProperties(AuditionApiProperties.class)
 public class WebServiceConfiguration implements WebMvcConfigurer {
 
-    private static final String YEAR_MONTH_DAY_PATTERN = "yyyy-MM-dd";
+    private final AuditionApiProperties apiProperties;
 
-    @Bean
-    public ObjectMapper objectMapper() {
-        // TODO configure Jackson Object mapper that
-        //  1. allows for date format as yyyy-MM-dd
-        //  2. Does not fail on unknown properties
-        //  3. maps to camelCase
-        //  4. Does not include null values or empty values
-        //  5. does not write datas as timestamps.
-        return new ObjectMapper();
+    public WebServiceConfiguration(final AuditionApiProperties apiProperties) {
+        this.apiProperties = apiProperties;
     }
 
     @Bean
-    public RestTemplate restTemplate() {
-        final RestTemplate restTemplate = new RestTemplate(
-            new BufferingClientHttpRequestFactory(createClientFactory()));
-        // TODO use object mapper
-        // TODO create a logging interceptor that logs request/response for rest template calls.
+    public ObjectMapper objectMapper() {
+        final ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.setPropertyNamingStrategy(PropertyNamingStrategies.LOWER_CAMEL_CASE);
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        return objectMapper;
+    }
 
+    @Bean
+    public RestTemplate restTemplate(final ObjectMapper objectMapper) {
+        final RestTemplate restTemplate = new RestTemplate(createClientFactory());
+        restTemplate.getMessageConverters().replaceAll(converter ->
+            converter instanceof MappingJackson2HttpMessageConverter
+                ? new MappingJackson2HttpMessageConverter(objectMapper)
+                : converter
+        );
         return restTemplate;
     }
 
     private SimpleClientHttpRequestFactory createClientFactory() {
         final SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+        requestFactory.setConnectTimeout(apiProperties.getConnectTimeoutMs());
+        requestFactory.setReadTimeout(apiProperties.getReadTimeoutMs());
         requestFactory.setOutputStreaming(false);
         return requestFactory;
     }
