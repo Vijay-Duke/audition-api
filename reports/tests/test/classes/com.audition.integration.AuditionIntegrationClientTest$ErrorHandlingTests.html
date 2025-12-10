@@ -41,7 +41,7 @@
 </td>
 <td>
 <div class="infoBox" id="duration">
-<div class="counter">0.033s</div>
+<div class="counter">0.045s</div>
 <p>duration</p>
 </div>
 </td>
@@ -81,7 +81,7 @@
 <tr>
 <td class="success">Should handle 429 Too Many Requests by rethrowing for retry</td>
 <td class="success">shouldHandle429TooManyRequests()</td>
-<td class="success">0.001s</td>
+<td class="success">0.002s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
@@ -105,55 +105,55 @@
 <tr>
 <td class="success">HTTP 500 should be rethrown for retry</td>
 <td class="success">shouldHandle5xxServerErrors(int)[1]</td>
-<td class="success">0.002s</td>
+<td class="success">0.003s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">HTTP 502 should be rethrown for retry</td>
 <td class="success">shouldHandle5xxServerErrors(int)[2]</td>
-<td class="success">0.001s</td>
+<td class="success">0.002s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">HTTP 503 should be rethrown for retry</td>
 <td class="success">shouldHandle5xxServerErrors(int)[3]</td>
-<td class="success">0.001s</td>
+<td class="success">0.002s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">HTTP 504 should be rethrown for retry</td>
 <td class="success">shouldHandle5xxServerErrors(int)[4]</td>
-<td class="success">0.001s</td>
+<td class="success">0.002s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Should rethrow connection timeout for retry</td>
 <td class="success">shouldHandleConnectionTimeout()</td>
-<td class="success">0.001s</td>
+<td class="success">0.004s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Should rethrow connection errors in getCommentsForPost for retry</td>
 <td class="success">shouldHandleErrorsInGetCommentsForPost()</td>
-<td class="success">0.001s</td>
+<td class="success">0.002s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Should rethrow server errors in getPostById for retry</td>
 <td class="success">shouldHandleErrorsInGetPostById()</td>
-<td class="success">0.001s</td>
+<td class="success">0.002s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Should rethrow server errors in getPostWithComments for retry</td>
 <td class="success">shouldHandleErrorsInGetPostWithComments()</td>
-<td class="success">0.001s</td>
+<td class="success">0.002s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Should handle generic RestClientException with 500</td>
 <td class="success">shouldHandleGenericRestClientException()</td>
-<td class="success">0.002s</td>
+<td class="success">0.003s</td>
 <td class="success">passed</td>
 </tr>
 </table>
@@ -161,8 +161,8 @@
 <div id="tab1" class="tab">
 <h2>Standard output</h2>
 <span class="code">
-<pre>2025-12-10 05:24:26.242 ERROR 2502 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Connection error fetching posts: Connection timed out
-2025-12-10 05:24:26.244 ERROR 2502 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Unexpected error fetching posts: Unexpected error
+<pre>2025-12-10 05:36:08.510 ERROR 2556 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Connection error fetching posts: Connection timed out
+2025-12-10 05:36:08.514 ERROR 2556 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Unexpected error fetching posts: Unexpected error
 
 org.springframework.web.client.RestClientException: Unexpected error
 	at com.audition.integration.AuditionIntegrationClient.lambda$getPosts$0(AuditionIntegrationClient.java:51)
@@ -270,18 +270,18 @@ org.springframework.web.client.RestClientException: Unexpected error
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
 	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
 
-2025-12-10 05:24:26.277 ERROR 2502 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Client error fetching posts: 400 BAD_REQUEST
-2025-12-10 05:24:26.283 ERROR 2502 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Client error fetching posts: 401 UNAUTHORIZED
-2025-12-10 05:24:26.285 ERROR 2502 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Client error fetching posts: 403 FORBIDDEN
-2025-12-10 05:24:26.288 ERROR 2502 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Server error fetching Post with id 1: 503 SERVICE_UNAVAILABLE
-2025-12-10 05:24:26.291 ERROR 2502 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Server error fetching posts: 500 INTERNAL_SERVER_ERROR
-2025-12-10 05:24:26.294 ERROR 2502 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Server error fetching posts: 502 BAD_GATEWAY
-2025-12-10 05:24:26.296 ERROR 2502 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Server error fetching posts: 503 SERVICE_UNAVAILABLE
-2025-12-10 05:24:26.298 ERROR 2502 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Server error fetching posts: 504 GATEWAY_TIMEOUT
-2025-12-10 05:24:26.300 ERROR 2502 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Server error fetching Post with id 1: 503 SERVICE_UNAVAILABLE
-2025-12-10 05:24:26.302 ERROR 2502 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Client error fetching posts: 429 TOO_MANY_REQUESTS
-2025-12-10 05:24:26.302  WARN 2502 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Rate limited, will retry: 429 TOO_MANY_REQUESTS
-2025-12-10 05:24:26.304 ERROR 2502 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Connection error fetching comments for post with id 1: Connection refused
+2025-12-10 05:36:08.549 ERROR 2556 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Client error fetching posts: 400 BAD_REQUEST
+2025-12-10 05:36:08.556 ERROR 2556 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Client error fetching posts: 401 UNAUTHORIZED
+2025-12-10 05:36:08.559 ERROR 2556 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Client error fetching posts: 403 FORBIDDEN
+2025-12-10 05:36:08.563 ERROR 2556 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Server error fetching Post with id 1: 503 SERVICE_UNAVAILABLE
+2025-12-10 05:36:08.567 ERROR 2556 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Server error fetching posts: 500 INTERNAL_SERVER_ERROR
+2025-12-10 05:36:08.572 ERROR 2556 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Server error fetching posts: 502 BAD_GATEWAY
+2025-12-10 05:36:08.574 ERROR 2556 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Server error fetching posts: 503 SERVICE_UNAVAILABLE
+2025-12-10 05:36:08.577 ERROR 2556 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Server error fetching posts: 504 GATEWAY_TIMEOUT
+2025-12-10 05:36:08.579 ERROR 2556 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Server error fetching Post with id 1: 503 SERVICE_UNAVAILABLE
+2025-12-10 05:36:08.581 ERROR 2556 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Client error fetching posts: 429 TOO_MANY_REQUESTS
+2025-12-10 05:36:08.582  WARN 2556 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Rate limited, will retry: 429 TOO_MANY_REQUESTS
+2025-12-10 05:36:08.584 ERROR 2556 --- [    Test worker] c.a.i.AuditionIntegrationClient          : Connection error fetching comments for post with id 1: Connection refused
 </pre>
 </span>
 </div>
@@ -293,7 +293,7 @@ org.springframework.web.client.RestClientException: Unexpected error
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="http://www.gradle.org">Gradle 7.6</a> at Dec 10, 2025, 5:24:26 AM</p>
+<a href="http://www.gradle.org">Gradle 7.6</a> at Dec 10, 2025, 5:36:09 AM</p>
 </div>
 </div>
 </body>

@@ -36,8 +36,8 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "Invalid request parameters",
+          "503": {
+            "description": "Upstream service unavailable",
             "content": {
               "application/json": {
                 "schema": {
@@ -59,8 +59,8 @@
               }
             }
           },
-          "503": {
-            "description": "Upstream service unavailable",
+          "400": {
+            "description": "Invalid request parameters",
             "content": {
               "application/json": {
                 "schema": {
@@ -107,8 +107,8 @@
               }
             }
           },
-          "503": {
-            "description": "Upstream service unavailable",
+          "400": {
+            "description": "Invalid post ID (must be positive number)",
             "content": {
               "application/json": {
                 "schema": {
@@ -117,8 +117,8 @@
               }
             }
           },
-          "400": {
-            "description": "Invalid post ID (must be positive number)",
+          "503": {
+            "description": "Upstream service unavailable",
             "content": {
               "application/json": {
                 "schema": {
@@ -162,6 +162,16 @@
           }
         ],
         "responses": {
+          "400": {
+            "description": "Invalid post ID (must be positive number)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          },
           "503": {
             "description": "Upstream service unavailable",
             "content": {
@@ -172,8 +182,8 @@
               }
             }
           },
-          "400": {
-            "description": "Invalid post ID (must be positive number)",
+          "404": {
+            "description": "Post not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -188,16 +198,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AuditionPost"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Post not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetail"
                 }
               }
             }
