@@ -94,6 +94,16 @@
           }
         ],
         "responses": {
+          "400": {
+            "description": "Invalid post ID (must be positive number)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
+                }
+              }
+            }
+          },
           "200": {
             "description": "Successfully retrieved comments",
             "content": {
@@ -103,16 +113,6 @@
                   "items": {
                     "$ref": "#/components/schemas/Comment"
                   }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid post ID (must be positive number)",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetail"
                 }
               }
             }
@@ -182,22 +182,22 @@
               }
             }
           },
-          "404": {
-            "description": "Post not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ProblemDetail"
-                }
-              }
-            }
-          },
           "200": {
             "description": "Successfully retrieved post",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AuditionPost"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Post not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetail"
                 }
               }
             }
