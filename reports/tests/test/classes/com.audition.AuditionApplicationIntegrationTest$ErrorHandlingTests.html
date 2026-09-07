@@ -81,13 +81,13 @@
 <tr>
 <td class="success">Should return 429 when rate limited with rate limit headers</td>
 <td class="success">shouldReturn429WhenRateLimited()</td>
-<td class="success">1m1.10s</td>
+<td class="success">1m1.09s</td>
 <td class="success">passed</td>
 </tr>
 <tr>
 <td class="success">Should return 503 when upstream API is unavailable</td>
 <td class="success">shouldReturn503WhenUpstreamUnavailable()</td>
-<td class="success">1.043s</td>
+<td class="success">1.051s</td>
 <td class="success">passed</td>
 </tr>
 </table>
@@ -95,47 +95,47 @@
 <div id="tab1" class="tab">
 <h2>Standard output</h2>
 <span class="code">
-<pre>05:29:51.296 [Test worker] DEBUG org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [ErrorHandlingTests]: using SpringBootContextLoader
-05:29:51.302 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Could not detect default resource locations for test class [com.audition.AuditionApplicationIntegrationTest$ErrorHandlingTests]: no resource found for suffixes {-context.xml, Context.groovy}.
-05:29:51.305 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.audition.AuditionApplicationIntegrationTest$ErrorHandlingTests]: ErrorHandlingTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-05:29:51.312 [Test worker] DEBUG org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Using ContextCustomizers for test class [ErrorHandlingTests]: [DisableObservabilityContextCustomizer, PropertyMappingContextCustomizer, Customizer, ExcludeFilterContextCustomizer, DuplicateJsonObjectContextCustomizer, MockitoContextCustomizer, TestRestTemplateContextCustomizer, DynamicPropertiesContextCustomizer]
-05:29:51.318 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.audition.AuditionApplication for test class com.audition.AuditionApplicationIntegrationTest$ErrorHandlingTests
-05:29:51.330 [Test worker] DEBUG org.springframework.test.context.util.TestContextSpringFactoriesUtils - Skipping candidate TestExecutionListener [org.springframework.test.context.transaction.TransactionalTestExecutionListener] due to a missing dependency. Specify custom TestExecutionListener classes or make the default TestExecutionListener classes and their required dependencies available. Offending class: [org/springframework/transaction/interceptor/TransactionAttributeSource]
-05:29:51.331 [Test worker] DEBUG org.springframework.test.context.util.TestContextSpringFactoriesUtils - Skipping candidate TestExecutionListener [org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener] due to a missing dependency. Specify custom TestExecutionListener classes or make the default TestExecutionListener classes and their required dependencies available. Offending class: [org/springframework/transaction/interceptor/TransactionAttribute]
-05:29:51.332 [Test worker] DEBUG org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Using TestExecutionListeners for test class [ErrorHandlingTests]: [ServletTestExecutionListener, DirtiesContextBeforeModesTestExecutionListener, ApplicationEventsTestExecutionListener, MockitoTestExecutionListener, DependencyInjectionTestExecutionListener, DirtiesContextTestExecutionListener, EventPublishingTestExecutionListener, RestDocsTestExecutionListener, MockRestServiceServerResetTestExecutionListener, MockMvcPrintOnlyOnFailureTestExecutionListener, WebDriverTestExecutionListener, MockWebServiceServerTestExecutionListener, ResetMocksTestExecutionListener]
-05:29:51.334 [Test worker] DEBUG org.springframework.test.context.support.AbstractDirtiesContextTestExecutionListener - Before test class: class [ErrorHandlingTests], class annotated with @DirtiesContext [false] with mode [null]
-05:29:51.374 [Test worker] DEBUG org.springframework.test.context.support.DependencyInjectionTestExecutionListener - Performing dependency injection for test class com.audition.AuditionApplicationIntegrationTest
-05:29:54,392 |-INFO in ch.qos.logback.core.joran.util.ConfigurationWatchListUtil@1a4132b2 - Adding [jar:file:/home/runner/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot/3.0.3/d781e7afbeb3d05ce361e9cc4fa7d38b15fb3862/spring-boot-3.0.3.jar!/org/springframework/boot/logging/logback/defaults.xml] to configuration watch list.
-05:29:54,393 |-INFO in ch.qos.logback.core.joran.spi.ConfigurationWatchList@1f96db42 - URL [jar:file:/home/runner/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot/3.0.3/d781e7afbeb3d05ce361e9cc4fa7d38b15fb3862/spring-boot-3.0.3.jar!/org/springframework/boot/logging/logback/defaults.xml] is not of type file
-05:29:54,406 |-INFO in ch.qos.logback.core.joran.action.ConversionRuleAction - registering conversion word clr with class [org.springframework.boot.logging.logback.ColorConverter]
-05:29:54,406 |-INFO in ch.qos.logback.core.joran.action.ConversionRuleAction - registering conversion word wex with class [org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter]
-05:29:54,406 |-INFO in ch.qos.logback.core.joran.action.ConversionRuleAction - registering conversion word wEx with class [org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter]
-05:29:54,579 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - Processing appender named [console]
-05:29:54,579 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
-05:29:54,597 |-INFO in ch.qos.logback.core.model.processor.ImplicitModelHandler - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
-05:29:54,679 |-WARN in ch.qos.logback.core.model.processor.AppenderModelHandler - Appender named [flatfile] not referenced. Skipping further processing.
-05:29:54,679 |-WARN in ch.qos.logback.core.model.processor.AppenderModelHandler - Appender named [logstash] not referenced. Skipping further processing.
-05:29:54,679 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.apache.catalina.startup.DigesterFactory] to ERROR
-05:29:54,680 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13bf9a03 - Propagating ERROR level on Logger[org.apache.catalina.startup.DigesterFactory] onto the JUL framework
-05:29:54,680 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.apache.catalina.util.LifecycleBase] to ERROR
-05:29:54,680 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13bf9a03 - Propagating ERROR level on Logger[org.apache.catalina.util.LifecycleBase] onto the JUL framework
-05:29:54,680 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.apache.coyote.http11.Http11NioProtocol] to WARN
-05:29:54,680 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13bf9a03 - Propagating WARN level on Logger[org.apache.coyote.http11.Http11NioProtocol] onto the JUL framework
-05:29:54,681 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.apache.sshd.common.util.SecurityUtils] to WARN
-05:29:54,681 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13bf9a03 - Propagating WARN level on Logger[org.apache.sshd.common.util.SecurityUtils] onto the JUL framework
-05:29:54,681 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.apache.tomcat.util.net.NioSelectorPool] to WARN
-05:29:54,681 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13bf9a03 - Propagating WARN level on Logger[org.apache.tomcat.util.net.NioSelectorPool] onto the JUL framework
-05:29:54,681 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.eclipse.jetty.util.component.AbstractLifeCycle] to ERROR
-05:29:54,681 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13bf9a03 - Propagating ERROR level on Logger[org.eclipse.jetty.util.component.AbstractLifeCycle] onto the JUL framework
-05:29:54,681 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.hibernate.validator.internal.util.Version] to WARN
-05:29:54,681 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13bf9a03 - Propagating WARN level on Logger[org.hibernate.validator.internal.util.Version] onto the JUL framework
-05:29:54,681 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.springframework.boot.actuate.endpoint.jmx] to WARN
-05:29:54,681 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13bf9a03 - Propagating WARN level on Logger[org.springframework.boot.actuate.endpoint.jmx] onto the JUL framework
-05:29:54,684 |-INFO in ch.qos.logback.classic.model.processor.RootLoggerModelHandler - Setting level of ROOT logger to INFO
-05:29:54,684 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13bf9a03 - Propagating INFO level on Logger[ROOT] onto the JUL framework
-05:29:54,685 |-INFO in ch.qos.logback.core.model.processor.AppenderRefModelHandler - Attaching appender named [console] to Logger[ROOT]
-05:29:54,685 |-INFO in ch.qos.logback.core.model.processor.DefaultProcessor@2c952e6 - End of configuration.
-05:29:54,685 |-INFO in org.springframework.boot.logging.logback.SpringBootJoranConfigurator@118e24af - Registering current configuration as safe fallback point
+<pre>05:29:52.945 [Test worker] DEBUG org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Neither @ContextConfiguration nor @ContextHierarchy found for test class [ErrorHandlingTests]: using SpringBootContextLoader
+05:29:52.950 [Test worker] DEBUG org.springframework.test.context.support.AbstractContextLoader - Could not detect default resource locations for test class [com.audition.AuditionApplicationIntegrationTest$ErrorHandlingTests]: no resource found for suffixes {-context.xml, Context.groovy}.
+05:29:52.950 [Test worker] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils - Could not detect default configuration classes for test class [com.audition.AuditionApplicationIntegrationTest$ErrorHandlingTests]: ErrorHandlingTests does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+05:29:52.959 [Test worker] DEBUG org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Using ContextCustomizers for test class [ErrorHandlingTests]: [DisableObservabilityContextCustomizer, PropertyMappingContextCustomizer, Customizer, ExcludeFilterContextCustomizer, DuplicateJsonObjectContextCustomizer, MockitoContextCustomizer, TestRestTemplateContextCustomizer, DynamicPropertiesContextCustomizer]
+05:29:52.960 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration com.audition.AuditionApplication for test class com.audition.AuditionApplicationIntegrationTest$ErrorHandlingTests
+05:29:52.969 [Test worker] DEBUG org.springframework.test.context.util.TestContextSpringFactoriesUtils - Skipping candidate TestExecutionListener [org.springframework.test.context.transaction.TransactionalTestExecutionListener] due to a missing dependency. Specify custom TestExecutionListener classes or make the default TestExecutionListener classes and their required dependencies available. Offending class: [org/springframework/transaction/interceptor/TransactionAttributeSource]
+05:29:52.976 [Test worker] DEBUG org.springframework.test.context.util.TestContextSpringFactoriesUtils - Skipping candidate TestExecutionListener [org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener] due to a missing dependency. Specify custom TestExecutionListener classes or make the default TestExecutionListener classes and their required dependencies available. Offending class: [org/springframework/transaction/interceptor/TransactionAttribute]
+05:29:52.977 [Test worker] DEBUG org.springframework.boot.test.context.SpringBootTestContextBootstrapper - Using TestExecutionListeners for test class [ErrorHandlingTests]: [ServletTestExecutionListener, DirtiesContextBeforeModesTestExecutionListener, ApplicationEventsTestExecutionListener, MockitoTestExecutionListener, DependencyInjectionTestExecutionListener, DirtiesContextTestExecutionListener, EventPublishingTestExecutionListener, RestDocsTestExecutionListener, MockRestServiceServerResetTestExecutionListener, MockMvcPrintOnlyOnFailureTestExecutionListener, WebDriverTestExecutionListener, MockWebServiceServerTestExecutionListener, ResetMocksTestExecutionListener]
+05:29:52.977 [Test worker] DEBUG org.springframework.test.context.support.AbstractDirtiesContextTestExecutionListener - Before test class: class [ErrorHandlingTests], class annotated with @DirtiesContext [false] with mode [null]
+05:29:53.014 [Test worker] DEBUG org.springframework.test.context.support.DependencyInjectionTestExecutionListener - Performing dependency injection for test class com.audition.AuditionApplicationIntegrationTest
+05:29:56,203 |-INFO in ch.qos.logback.core.joran.util.ConfigurationWatchListUtil@1a4132b2 - Adding [jar:file:/home/runner/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot/3.0.3/d781e7afbeb3d05ce361e9cc4fa7d38b15fb3862/spring-boot-3.0.3.jar!/org/springframework/boot/logging/logback/defaults.xml] to configuration watch list.
+05:29:56,203 |-INFO in ch.qos.logback.core.joran.spi.ConfigurationWatchList@1f96db42 - URL [jar:file:/home/runner/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot/3.0.3/d781e7afbeb3d05ce361e9cc4fa7d38b15fb3862/spring-boot-3.0.3.jar!/org/springframework/boot/logging/logback/defaults.xml] is not of type file
+05:29:56,227 |-INFO in ch.qos.logback.core.joran.action.ConversionRuleAction - registering conversion word clr with class [org.springframework.boot.logging.logback.ColorConverter]
+05:29:56,227 |-INFO in ch.qos.logback.core.joran.action.ConversionRuleAction - registering conversion word wex with class [org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter]
+05:29:56,227 |-INFO in ch.qos.logback.core.joran.action.ConversionRuleAction - registering conversion word wEx with class [org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter]
+05:29:56,357 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - Processing appender named [console]
+05:29:56,357 |-INFO in ch.qos.logback.core.model.processor.AppenderModelHandler - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+05:29:56,372 |-INFO in ch.qos.logback.core.model.processor.ImplicitModelHandler - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+05:29:56,411 |-WARN in ch.qos.logback.core.model.processor.AppenderModelHandler - Appender named [flatfile] not referenced. Skipping further processing.
+05:29:56,411 |-WARN in ch.qos.logback.core.model.processor.AppenderModelHandler - Appender named [logstash] not referenced. Skipping further processing.
+05:29:56,411 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.apache.catalina.startup.DigesterFactory] to ERROR
+05:29:56,412 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13bf9a03 - Propagating ERROR level on Logger[org.apache.catalina.startup.DigesterFactory] onto the JUL framework
+05:29:56,412 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.apache.catalina.util.LifecycleBase] to ERROR
+05:29:56,412 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13bf9a03 - Propagating ERROR level on Logger[org.apache.catalina.util.LifecycleBase] onto the JUL framework
+05:29:56,412 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.apache.coyote.http11.Http11NioProtocol] to WARN
+05:29:56,412 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13bf9a03 - Propagating WARN level on Logger[org.apache.coyote.http11.Http11NioProtocol] onto the JUL framework
+05:29:56,412 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.apache.sshd.common.util.SecurityUtils] to WARN
+05:29:56,412 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13bf9a03 - Propagating WARN level on Logger[org.apache.sshd.common.util.SecurityUtils] onto the JUL framework
+05:29:56,412 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.apache.tomcat.util.net.NioSelectorPool] to WARN
+05:29:56,412 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13bf9a03 - Propagating WARN level on Logger[org.apache.tomcat.util.net.NioSelectorPool] onto the JUL framework
+05:29:56,413 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.eclipse.jetty.util.component.AbstractLifeCycle] to ERROR
+05:29:56,413 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13bf9a03 - Propagating ERROR level on Logger[org.eclipse.jetty.util.component.AbstractLifeCycle] onto the JUL framework
+05:29:56,413 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.hibernate.validator.internal.util.Version] to WARN
+05:29:56,413 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13bf9a03 - Propagating WARN level on Logger[org.hibernate.validator.internal.util.Version] onto the JUL framework
+05:29:56,413 |-INFO in ch.qos.logback.classic.model.processor.LoggerModelHandler - Setting level of logger [org.springframework.boot.actuate.endpoint.jmx] to WARN
+05:29:56,413 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13bf9a03 - Propagating WARN level on Logger[org.springframework.boot.actuate.endpoint.jmx] onto the JUL framework
+05:29:56,413 |-INFO in ch.qos.logback.classic.model.processor.RootLoggerModelHandler - Setting level of ROOT logger to INFO
+05:29:56,413 |-INFO in ch.qos.logback.classic.jul.LevelChangePropagator@13bf9a03 - Propagating INFO level on Logger[ROOT] onto the JUL framework
+05:29:56,413 |-INFO in ch.qos.logback.core.model.processor.AppenderRefModelHandler - Attaching appender named [console] to Logger[ROOT]
+05:29:56,413 |-INFO in ch.qos.logback.core.model.processor.DefaultProcessor@2c952e6 - End of configuration.
+05:29:56,413 |-INFO in org.springframework.boot.logging.logback.SpringBootJoranConfigurator@118e24af - Registering current configuration as safe fallback point
 
 
   .   ____          _            __ _ _
@@ -146,34 +146,34 @@
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::                (v3.0.3)
 
-2026-09-07 05:29:55.084  INFO 2628 --- [    Test worker] c.a.AuditionApplicationIntegrationTest   : Starting AuditionApplicationIntegrationTest using Java 17.0.20.1 with PID 2628 (started by runner in /home/runner/work/audition-api/audition-api)
-2026-09-07 05:29:55.089  INFO 2628 --- [    Test worker] c.a.AuditionApplicationIntegrationTest   : No active profile set, falling back to 1 default profile: &quot;default&quot;
-2026-09-07 05:29:55.174  INFO 2628 --- [    Test worker] o.s.c.c.c.ConfigServerConfigDataLoader   : Fetching config from server at : http://localhost:8888
-2026-09-07 05:29:55.174  INFO 2628 --- [    Test worker] o.s.c.c.c.ConfigServerConfigDataLoader   : Connect Timeout Exception on Url - http://localhost:8888. Will try the next url if available
-2026-09-07 05:29:55.175  WARN 2628 --- [    Test worker] o.s.c.c.c.ConfigServerConfigDataLoader   : Could not locate PropertySource ([ConfigServerConfigDataResource@6662af0a uris = array&lt;String&gt;['http://localhost:8888'], optional = true, profiles = list['default']]): I/O error on GET request for &quot;http://localhost:8888/application/default&quot;: Connection refused
-2026-09-07 05:30:00.180  INFO 2628 --- [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=8cedff15-2817-3db4-a3ee-822b35614823
-2026-09-07 05:30:01.329  INFO 2628 --- [    Test worker] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 0 (http)
-2026-09-07 05:30:01.345  INFO 2628 --- [    Test worker] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-2026-09-07 05:30:01.345  INFO 2628 --- [    Test worker] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
-2026-09-07 05:30:01.470  INFO 2628 --- [    Test worker] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-2026-09-07 05:30:01.471  INFO 2628 --- [    Test worker] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 6289 ms
-2026-09-07 05:30:04.675  INFO 2628 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint(s) beneath base path '/actuator'
-2026-09-07 05:30:04.897  INFO 2628 --- [    Test worker] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 40469 (http) with context path ''
-2026-09-07 05:30:04.919  INFO 2628 --- [    Test worker] c.a.AuditionApplicationIntegrationTest   : Started AuditionApplicationIntegrationTest in 13.395 seconds (process running for 21.097)
-2026-09-07 05:30:05.646  INFO 2628 --- [o-auto-1-exec-3] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2026-09-07 05:30:05.647  INFO 2628 --- [o-auto-1-exec-3] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
-2026-09-07 05:30:05.649  INFO 2628 --- [o-auto-1-exec-3] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
-2026-09-07 05:30:05.995 ERROR 2628 --- [o-auto-1-exec-3] c.a.i.AuditionIntegrationClient          : Client error fetching posts: 429 Too Many Requests: [no body]
-2026-09-07 05:30:05.997  WARN 2628 --- [o-auto-1-exec-3] c.a.i.AuditionIntegrationClient          : Rate limited, will retry: 429 Too Many Requests: [no body]
-2026-09-07 05:30:06.001  WARN 2628 --- [o-auto-1-exec-3] c.a.i.AuditionIntegrationClient          : Circuit breaker fallback for getPosts: 429 Too Many Requests: [no body]
-2026-09-07 05:30:06.004  WARN 2628 --- [o-auto-1-exec-3] c.a.w.advice.ExceptionControllerAdvice   : Client error [Rate Limit Exceeded]: API rate limit exceeded. Please try again later.
-2026-09-07 05:31:06.071 ERROR 2628 --- [o-auto-1-exec-1] c.a.i.AuditionIntegrationClient          : Client error fetching posts: 429 Too Many Requests: [no body]
-2026-09-07 05:31:06.072  WARN 2628 --- [o-auto-1-exec-1] c.a.i.AuditionIntegrationClient          : Rate limited, will retry: 429 Too Many Requests: [no body]
-2026-09-07 05:31:06.072  WARN 2628 --- [o-auto-1-exec-1] c.a.i.AuditionIntegrationClient          : Circuit breaker fallback for getPosts: 429 Too Many Requests: [no body]
-2026-09-07 05:31:06.072  WARN 2628 --- [o-auto-1-exec-1] c.a.w.advice.ExceptionControllerAdvice   : Client error [Rate Limit Exceeded]: API rate limit exceeded. Please try again later.
-2026-09-07 05:31:06.173 ERROR 2628 --- [o-auto-1-exec-5] c.a.i.AuditionIntegrationClient          : Server error fetching posts: 500 Server Error: [no body]
-2026-09-07 05:31:06.174  WARN 2628 --- [o-auto-1-exec-5] c.a.i.AuditionIntegrationClient          : Circuit breaker fallback for getPosts: 500 Server Error: [no body]
-2026-09-07 05:31:06.174 ERROR 2628 --- [o-auto-1-exec-5] c.a.w.advice.ExceptionControllerAdvice   : System exception occurred [Service Unavailable]: Service temporarily unavailable. Please try again later.
+2026-09-07 05:29:56.761  INFO 2615 --- [    Test worker] c.a.AuditionApplicationIntegrationTest   : Starting AuditionApplicationIntegrationTest using Java 17.0.20.1 with PID 2615 (started by runner in /home/runner/work/audition-api/audition-api)
+2026-09-07 05:29:56.766  INFO 2615 --- [    Test worker] c.a.AuditionApplicationIntegrationTest   : No active profile set, falling back to 1 default profile: &quot;default&quot;
+2026-09-07 05:29:56.844  INFO 2615 --- [    Test worker] o.s.c.c.c.ConfigServerConfigDataLoader   : Fetching config from server at : http://localhost:8888
+2026-09-07 05:29:56.851  INFO 2615 --- [    Test worker] o.s.c.c.c.ConfigServerConfigDataLoader   : Connect Timeout Exception on Url - http://localhost:8888. Will try the next url if available
+2026-09-07 05:29:56.851  WARN 2615 --- [    Test worker] o.s.c.c.c.ConfigServerConfigDataLoader   : Could not locate PropertySource ([ConfigServerConfigDataResource@6662af0a uris = array&lt;String&gt;['http://localhost:8888'], optional = true, profiles = list['default']]): I/O error on GET request for &quot;http://localhost:8888/application/default&quot;: Connection refused
+2026-09-07 05:30:01.665  INFO 2615 --- [    Test worker] o.s.cloud.context.scope.GenericScope     : BeanFactory id=8cedff15-2817-3db4-a3ee-822b35614823
+2026-09-07 05:30:03.960  INFO 2615 --- [    Test worker] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 0 (http)
+2026-09-07 05:30:04.009  INFO 2615 --- [    Test worker] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-09-07 05:30:04.010  INFO 2615 --- [    Test worker] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.5]
+2026-09-07 05:30:04.181  INFO 2615 --- [    Test worker] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-09-07 05:30:04.182  INFO 2615 --- [    Test worker] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 7320 ms
+2026-09-07 05:30:07.043  INFO 2615 --- [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint(s) beneath base path '/actuator'
+2026-09-07 05:30:07.228  INFO 2615 --- [    Test worker] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 44475 (http) with context path ''
+2026-09-07 05:30:07.261  INFO 2615 --- [    Test worker] c.a.AuditionApplicationIntegrationTest   : Started AuditionApplicationIntegrationTest in 14.103 seconds (process running for 20.484)
+2026-09-07 05:30:08.057  INFO 2615 --- [o-auto-1-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-09-07 05:30:08.058  INFO 2615 --- [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-09-07 05:30:08.060  INFO 2615 --- [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2026-09-07 05:30:08.351 ERROR 2615 --- [o-auto-1-exec-1] c.a.i.AuditionIntegrationClient          : Client error fetching posts: 429 Too Many Requests: [no body]
+2026-09-07 05:30:08.354  WARN 2615 --- [o-auto-1-exec-1] c.a.i.AuditionIntegrationClient          : Rate limited, will retry: 429 Too Many Requests: [no body]
+2026-09-07 05:30:08.357  WARN 2615 --- [o-auto-1-exec-1] c.a.i.AuditionIntegrationClient          : Circuit breaker fallback for getPosts: 429 Too Many Requests: [no body]
+2026-09-07 05:30:08.360  WARN 2615 --- [o-auto-1-exec-1] c.a.w.advice.ExceptionControllerAdvice   : Client error [Rate Limit Exceeded]: API rate limit exceeded. Please try again later.
+2026-09-07 05:31:08.431 ERROR 2615 --- [o-auto-1-exec-3] c.a.i.AuditionIntegrationClient          : Client error fetching posts: 429 Too Many Requests: [no body]
+2026-09-07 05:31:08.431  WARN 2615 --- [o-auto-1-exec-3] c.a.i.AuditionIntegrationClient          : Rate limited, will retry: 429 Too Many Requests: [no body]
+2026-09-07 05:31:08.431  WARN 2615 --- [o-auto-1-exec-3] c.a.i.AuditionIntegrationClient          : Circuit breaker fallback for getPosts: 429 Too Many Requests: [no body]
+2026-09-07 05:31:08.432  WARN 2615 --- [o-auto-1-exec-3] c.a.w.advice.ExceptionControllerAdvice   : Client error [Rate Limit Exceeded]: API rate limit exceeded. Please try again later.
+2026-09-07 05:31:08.548 ERROR 2615 --- [o-auto-1-exec-4] c.a.i.AuditionIntegrationClient          : Server error fetching posts: 500 Server Error: [no body]
+2026-09-07 05:31:08.548  WARN 2615 --- [o-auto-1-exec-4] c.a.i.AuditionIntegrationClient          : Circuit breaker fallback for getPosts: 500 Server Error: [no body]
+2026-09-07 05:31:08.549 ERROR 2615 --- [o-auto-1-exec-4] c.a.w.advice.ExceptionControllerAdvice   : System exception occurred [Service Unavailable]: Service temporarily unavailable. Please try again later.
 
 com.audition.common.exception.SystemException: Service temporarily unavailable. Please try again later.
 	at com.audition.common.exception.SystemException.serviceUnavailable(SystemException.java:106)
@@ -324,9 +324,9 @@ Caused by: org.springframework.web.client.HttpServerErrorException$InternalServe
 	at io.github.resilience4j.spring6.fallback.DefaultFallbackDecorator.lambda$decorate$0(DefaultFallbackDecorator.java:36)
 	... 108 common frames omitted
 
-2026-09-07 05:31:07.193 ERROR 2628 --- [o-auto-1-exec-2] c.a.i.AuditionIntegrationClient          : Server error fetching posts: 500 Server Error: [no body]
-2026-09-07 05:31:07.193  WARN 2628 --- [o-auto-1-exec-2] c.a.i.AuditionIntegrationClient          : Circuit breaker fallback for getPosts: 500 Server Error: [no body]
-2026-09-07 05:31:07.194 ERROR 2628 --- [o-auto-1-exec-2] c.a.w.advice.ExceptionControllerAdvice   : System exception occurred [Service Unavailable]: Service temporarily unavailable. Please try again later.
+2026-09-07 05:31:09.572 ERROR 2615 --- [o-auto-1-exec-5] c.a.i.AuditionIntegrationClient          : Server error fetching posts: 500 Server Error: [no body]
+2026-09-07 05:31:09.572  WARN 2615 --- [o-auto-1-exec-5] c.a.i.AuditionIntegrationClient          : Circuit breaker fallback for getPosts: 500 Server Error: [no body]
+2026-09-07 05:31:09.573 ERROR 2615 --- [o-auto-1-exec-5] c.a.w.advice.ExceptionControllerAdvice   : System exception occurred [Service Unavailable]: Service temporarily unavailable. Please try again later.
 
 com.audition.common.exception.SystemException: Service temporarily unavailable. Please try again later.
 	at com.audition.common.exception.SystemException.serviceUnavailable(SystemException.java:106)
@@ -488,7 +488,7 @@ Caused by: org.springframework.web.client.HttpServerErrorException$InternalServe
 <input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
 </label>
 </div>Generated by 
-<a href="http://www.gradle.org">Gradle 7.6</a> at Sep 7, 2026, 5:31:10 AM</p>
+<a href="http://www.gradle.org">Gradle 7.6</a> at Sep 7, 2026, 5:31:13 AM</p>
 </div>
 </div>
 </body>
